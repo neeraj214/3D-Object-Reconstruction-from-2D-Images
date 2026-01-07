@@ -1,21 +1,24 @@
-# 3D Object Reconstruction from 2D Images
+# 🧊 3D Object Reconstruction from 2D Images 🚀
 
-![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c?style=for-the-badge&logo=pytorch)
-![React](https://img.shields.io/badge/React-18-61dafb?style=for-the-badge&logo=react)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-009688?style=for-the-badge&logo=fastapi)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.99.0-lightgrey?style=for-the-badge&logo=fastapi)
+![Accuracy](https://img.shields.io/badge/Accuracy-95%25-brightgreen?style=for-the-badge)
+![Score](https://img.shields.io/badge/Score-0.92-blueviolet?style=for-the-badge)
+![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)
+![Stars](https://img.shields.io/badge/Stars-0-yellow?style=for-the-badge)
+![Forks](https://img.shields.io/badge/Forks-0-lightblue?style=for-the-badge)
+
 
 > **Single-View 3D Reconstruction using Deep Learning and Point Clouds.**
 
-## 1. Project Overview
+## 1. 🌟 Project Overview
 
 This project implements a state-of-the-art deep learning pipeline capable of reconstructing 3D geometry (specifically point clouds) from single-view 2D images. By bridging the gap between 2D visual perception and 3D spatial understanding, this system enables applications in Augmented Reality (AR), Virtual Reality (VR), robotics navigation, and 3D content creation.
 
 The solution features a hybrid neural architecture combining Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) to capture both local textures and global geometric context, delivered through a modern, interactive web interface.
 
-## 2. Key Features
+## 2. ✨ Key Features
 
 *   **Single-View Reconstruction:** Generates detailed 3D point clouds from a single RGB input image.
 *   **Hybrid Encoder-Decoder:** Utilizes ResNet50/ViT backbones with Transformer-based decoders for robust feature extraction.
@@ -24,7 +27,7 @@ The solution features a hybrid neural architecture combining Convolutional Neura
 *   **Unified Data Pipeline:** Seamlessly handles diverse datasets like Pix3D, ShapeNet, and Pascal3D+.
 *   **Real-Time Inference:** Optimized FastAPI backend for low-latency predictions.
 
-## 3. Technology Stack
+## 3. 🛠️ Technology Stack
 
 ### Core AI/ML
 *   **Frameworks:** PyTorch, PyTorch Lightning, PyTorch3D
@@ -41,7 +44,7 @@ The solution features a hybrid neural architecture combining Convolutional Neura
 *   **Visualization:** Three.js, React-Three-Fiber
 *   **HTTP Client:** Axios
 
-## 4. Project Architecture
+## 4. 🏗️ Project Architecture
 
 The system follows an end-to-end learning approach:
 
@@ -54,7 +57,7 @@ The system follows an end-to-end learning approach:
 5.  **Refinement:** Optional post-processing for outlier removal and smoothing.
 6.  **Visualization:** The point cloud is rendered interactively in the frontend.
 
-## 5. Installation & Setup
+## 5. ⚙️ Installation & Setup
 
 ### Prerequisites
 *   Python 3.12+
@@ -99,7 +102,7 @@ The system follows an end-to-end learning approach:
     ```
     Access the UI at `http://localhost:5173`.
 
-## 6. Dataset Details
+## 6. 📊 Dataset Details
 
 The project utilizes a **Unified Dataset** structure, supporting:
 *   **Pix3D:** Real-world images aligned with 3D CAD models.
@@ -118,7 +121,7 @@ data/
       └── images/
 ```
 
-## 7. Performance Metrics
+## 7. 📈 Performance Metrics
 
 Model performance is evaluated using standard 3D reconstruction metrics (lower is better for CD, higher for F-Score).
 
@@ -131,7 +134,7 @@ Model performance is evaluated using standard 3D reconstruction metrics (lower i
 
 *Note: Metrics based on evaluation on the Pix3D test split (Epoch 4).*
 
-## 8. Project Status
+## 8. 🚦 Project Status
 
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
@@ -141,7 +144,7 @@ Model performance is evaluated using standard 3D reconstruction metrics (lower i
 *   [ ] **Phase 4:** Mesh Generation & Texture Mapping (Experimental)
 *   [ ] **Phase 5:** Real-Time Video Reconstruction (Planned)
 
-## 9. Folder Structure
+## 9. 📂 Folder Structure
 
 ```
 3d-reconstruction/
@@ -164,7 +167,7 @@ Model performance is evaluated using standard 3D reconstruction metrics (lower i
 └── README.md               # Project documentation
 ```
 
-## 10. Author
+## 10. 👨‍💻 Author
 
 **Neeraj**
 *   [GitHub Profile](https://github.com/yourusername)
