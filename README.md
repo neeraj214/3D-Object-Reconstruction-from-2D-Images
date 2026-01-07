@@ -3,7 +3,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.99.0-lightgrey?style=for-the-badge&logo=fastapi)
-![Accuracy](https://img.shields.io/badge/Accuracy-95%25-brightgreen?style=for-the-badge)
+![Accuracy](https://img.shields.io/badge/Accuracy-65%25-brightgreen?style=for-the-badge)
 ![Score](https://img.shields.io/badge/Score-0.92-blueviolet?style=for-the-badge)
 ![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)
 ![Stars](https://img.shields.io/badge/Stars-0-yellow?style=for-the-badge)
