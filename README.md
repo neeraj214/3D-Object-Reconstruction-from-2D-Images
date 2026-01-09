@@ -4,8 +4,8 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-009688?style=for-the-badge&logo=fastapi)
 ![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Enabled-blue?style=for-the-badge)
 ![Deep Learning](https://img.shields.io/badge/Deep%20Learning-CNN-orange?style=for-the-badge)
-![Open3D](https://img.shields.io/badge/Open3D-3D%20Visualization-0099CC?style=for-the-badge)
-![PyTorch](https://img.shields.io/badge/PyTorch-Framework-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![Open3D](https://img.shields.io/badge/Library-Open3D-blue?style=for-the-badge)
+![PyTorch](https://img.shields.io/badge/Framework-PyTorch-red?style=for-the-badge)
 ![Point Cloud](https://img.shields.io/badge/3D-Point%20Cloud-red?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
