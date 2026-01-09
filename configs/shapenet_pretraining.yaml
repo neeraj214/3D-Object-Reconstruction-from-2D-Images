@@ -1,0 +1,40 @@
+# ShapeNet Pretraining Configuration
+model:
+  encoder_type: 'resnet50'
+  representation: 'pointcloud'
+  image_size: [224, 224]
+  num_points: 2048
+  hidden_dim: 512
+  num_heads: 8
+  dropout: 0.1
+  uncertainty_quantification: false
+  domain_adaptation: false
+
+training:
+  num_epochs: 3
+  batch_size: 8
+  learning_rate: 1e-3
+  weight_decay: 1e-4
+  min_lr: 1e-5
+  gradient_clip_norm: 1.0
+  save_frequency: 5
+  checkpoint_dir: 'checkpoints/shapenet_pretraining'
+  output_dir: 'results/shapenet_pretraining'
+
+data:
+  dataset_names: ['corrected_dataset']
+  image_size: [224, 224]
+  pointcloud_size: 1024
+  num_workers: 0
+  preload_data: true
+
+evaluation:
+  metrics: ['chamfer_distance', 'hausdorff_distance', 'earth_movers_distance', 'f1_score']
+  save_visualizations: true
+  frequency: 5
+
+synthetic_renders:
+  num_views: 12
+  image_size: 224
+  radius: 2.0
+  elevation_range: [-30, 30]

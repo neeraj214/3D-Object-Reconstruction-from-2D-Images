@@ -1,0 +1,18 @@
+{
+  "pix3d": [
+    "bed",
+    "bookcase",
+    "chair",
+    "desk",
+    "img",
+    "misc",
+    "sofa",
+    "table",
+    "tool",
+    "wardrobe"
+  ],
+  "shapenet": [],
+  "pascal3d": [],
+  "objectnet3d": [],
+  "co3d": []
+}

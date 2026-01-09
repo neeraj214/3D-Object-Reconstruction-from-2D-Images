@@ -1,0 +1,6 @@
+{
+  "poisson_depth": 10,
+  "smoothing_iterations": 15,
+  "simplify_faces": 15000,
+  "texture_resolution": 1024
+}

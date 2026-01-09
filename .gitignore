@@ -1,0 +1,38 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+.env
+.env.*
+
+# Node / Frontend
+frontend/node_modules/
+.npm/
+
+# Datasets and large assets
+data/
+outputs/
+results/
+logs/
+experiments/
+project_backups/
+test_output/
+test_results/
+
+# Checkpoints / weights / artifacts
+*.ckpt
+*.pt
+*.pth
+*.onnx
+
+# Misc runtime
+*.log
+.vercel/
+

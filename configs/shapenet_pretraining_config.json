@@ -1,0 +1,137 @@
+{
+  "experiment_name": "shapenet_pretraining_synthetic",
+  "description": "ShapeNet pretraining with synthetic multi-view renders",
+  
+  "dataset": {
+    "shapenet_dir": "data/shapenet",
+    "categories": [
+      "airplane", "car", "chair", "table", "sofa", "lamp", 
+      "cabinet", "vessel", "rifle", "display", "phone", "bench",
+      "laptop", "watercraft", "motorcycle", "guitar", "piano", "rifle"
+    ],
+    "image_size": 224,
+    "num_views": 12,
+    "preload_renders": true
+  },
+  
+  "model": {
+    "encoder_type": "resnet50",
+    "decoder_type": "point_transformer",
+    "output_representation": "point_cloud",
+    "num_points": 2048,
+    "voxel_resolution": 64,
+    "use_attention": true,
+    "uncertainty_quantification": true,
+    "dropout": 0.1
+  },
+  
+  "training": {
+    "num_epochs": 100,
+    "batch_size": 16,
+    "num_workers": 4,
+    "grad_clip": 1.0,
+    "save_frequency": 10,
+    "eval_frequency": 5,
+    "mixed_precision": true
+  },
+  
+  "optimizer": {
+    "learning_rate": 1e-4,
+    "weight_decay": 1e-4,
+    "betas": [0.9, 0.999]
+  },
+  
+  "scheduler": {
+    "type": "cosine_annealing_warm_restarts",
+    "T_0": 10,
+    "T_mult": 2,
+    "eta_min": 1e-6
+  },
+  
+  "loss": {
+    "chamfer_weight": 1.0,
+    "emd_weight": 0.5,
+    "mv_weight": 0.3,
+    "l2_weight": 0.01,
+    "l1_weight": 0.01,
+    "uncertainty_weight": 0.001
+  },
+  
+  "evaluation": {
+    "metrics": ["chamfer_distance", "emd", "f_score", "iou"],
+    "num_points": 2048,
+    "thresholds": [0.01, 0.02, 0.05],
+    "visualize": true
+  },
+  
+  "output_dir": "experiments/shapenet_pretraining",
+  
+  "logging": {
+    "level": "INFO",
+    "save_logs": true,
+    "tensorboard": true,
+    "wandb": {
+      "enabled": false,
+      "project": "3d-reconstruction",
+      "entity": "your-entity"
+    }
+  },
+  
+  "data_augmentation": {
+    "enabled": true,
+    "image_augmentations": {
+      "random_crop": true,
+      "random_flip": true,
+      "color_jitter": {
+        "brightness": 0.2,
+        "contrast": 0.2,
+        "saturation": 0.2,
+        "hue": 0.1
+      },
+      "gaussian_noise": {
+        "std": 0.01
+      }
+    },
+    "pose_augmentations": {
+      "random_rotation": true,
+      "random_translation": 0.1
+    }
+  },
+  
+  "synthetic_rendering": {
+    "image_size": 224,
+    "num_views": 12,
+    "camera_radius": 2.0,
+    "elevation_range": [-30, 30],
+    "azimuth_range": [0, 360],
+    "lighting": {
+      "ambient": 0.4,
+      "directional": 0.6,
+      "direction": [0, 0, -1]
+    },
+    "background_color": [255, 255, 255],
+    "antialiasing": true
+  },
+  
+  "early_stopping": {
+    "enabled": true,
+    "patience": 15,
+    "min_delta": 0.001,
+    "monitor": "val_total_loss"
+  },
+  
+  "model_export": {
+    "export_formats": ["onnx", "tensorrt", "coreml"],
+    "onnx": {
+      "opset_version": 11,
+      "dynamic_axes": true
+    },
+    "tensorrt": {
+      "precision": "fp16",
+      "max_workspace_size": 1073741824
+    },
+    "coreml": {
+      "minimum_deployment_target": "13.0"
+    }
+  }
+}

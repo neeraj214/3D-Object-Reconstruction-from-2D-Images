@@ -1,0 +1,163 @@
+# Dataset Configuration for Hybrid 2D-to-3D Point Cloud Reconstruction
+
+# Dataset Selection Strategy
+dataset_selection:
+  primary_dataset: "Pix3D"  # Real images + 3D models
+  secondary_dataset: "ShapeNetCore"  # Synthetic renders + clean 3D models
+  rationale: "Pix3D provides real-world complexity while ShapeNetCore offers clean, controlled data"
+
+# Target Classes (10 categories)
+classes:
+  - id: 0
+    name: "chair"
+    description: "Various chair types (office, dining, armchair)"
+    pix3d_availability: "high"
+    shapenet_availability: "high"
+    characteristics: ["seating", "backrest", "legs", "varied geometries"]
+    
+  - id: 1
+    name: "table"
+    description: "Different table types (dining, coffee, side)"
+    pix3d_availability: "high"
+    shapenet_availability: "high"
+    characteristics: ["flat_surface", "legs", "support_structure", "functional"]
+    
+  - id: 2
+    name: "sofa"
+    description: "Sofas and couches"
+    pix3d_availability: "medium"
+    shapenet_availability: "high"
+    characteristics: ["seating", "upholstered", "multiple_seats", "living_room"]
+    
+  - id: 3
+    name: "car"
+    description: "Various car types and models"
+    pix3d_availability: "low"
+    shapenet_availability: "high"
+    characteristics: ["vehicle", "wheels", "complex_geometry", "aerodynamic"]
+    
+  - id: 4
+    name: "lamp"
+    description: "Table lamps, floor lamps, pendant lights"
+    pix3d_availability: "high"
+    shapenet_availability: "medium"
+    characteristics: ["lighting", "thin_structures", "electrical", "decorative"]
+    
+  - id: 5
+    name: "bottle"
+    description: "Bottles and containers"
+    pix3d_availability: "medium"
+    shapenet_availability: "high"
+    characteristics: ["container", "cylindrical", "liquid_storage", "small_object"]
+    
+  - id: 6
+    name: "display"
+    description: "Monitors, TVs, screens"
+    pix3d_availability: "high"
+    shapenet_availability: "medium"
+    characteristics: ["rectangular", "screen", "electronic", "flat_panel"]
+    
+  - id: 7
+    name: "cabinet"
+    description: "Storage cabinets and cupboards"
+    pix3d_availability: "high"
+    shapenet_availability: "high"
+    characteristics: ["storage", "boxy", "doors", "furniture"]
+    
+  - id: 8
+    name: "bench"
+    description: "Benches and long seating"
+    pix3d_availability: "medium"
+    shapenet_availability: "high"
+    characteristics: ["seating", "multiple_people", "outdoor_indoor", "long_surface"]
+    
+  - id: 9
+    name: "bookshelf"
+    description: "Bookshelves and open storage"
+    pix3d_availability: "high"
+    shapenet_availability: "high"
+    characteristics: ["storage", "open_shelves", "books", "rectangular"]
+
+# Data Collection Parameters
+collection:
+  target_samples_per_class: 5  # Initial small dataset
+  max_samples_per_class: 10    # Upper limit for small dataset
+  min_image_resolution: [224, 224]
+  min_model_vertices: 1000
+  max_model_vertices: 50000
+  
+# Quality Control Criteria
+quality_control:
+  image_requirements:
+    - "clear_object_visibility"
+    - "minimal_occlusion"
+    - "adequate_lighting"
+    - "sharp_focus"
+    - "reasonable_viewpoint"
+    
+  model_requirements:
+    - "watertight_mesh"
+    - "consistent_scale"
+    - "proper_normals"
+    - "clean_topology"
+    - "adequate_detail"
+    
+  alignment_requirements:
+    - "accurate_2d_3d_correspondence"
+    - "consistent_pose"
+    - "proper_camera_calibration"
+
+# Dataset Split Configuration
+splits:
+  train_ratio: 0.7
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  stratify_by_class: true
+  random_seed: 42
+
+# File Organization
+file_structure:
+  images_dir: "data/curated_dataset/images"
+  models_dir: "data/curated_dataset/models"
+  metadata_file: "data/curated_dataset/metadata.json"
+  splits_dir: "data/curated_dataset/splits"
+  
+  naming_convention:
+    format: "{class_name}_{sample_id:03d}.{extension}"
+    example: "chair_001.jpg", "chair_001.obj"
+
+# Data Sources Configuration
+data_sources:
+  pix3d:
+    base_path: "data/raw_pix3d"
+    categories: ["chair", "table", "sofa", "desk", "bed", "bookshelf", "misc"]
+    alignment_format: "pix3d_annotation"
+    quality_baseline: "real_world"
+    
+  shapenet:
+    base_path: "data/raw_shapenet"
+    categories: ["chair", "table", "car", "lamp", "bottle", "display", "cabinet", "bench", "bookshelf"]
+    alignment_format: "synthetic_render"
+    quality_baseline: "clean_geometry"
+
+# Augmentation Strategy (for future expansion)
+augmentation:
+  enable: false  # For initial small dataset
+  techniques:
+    - "multi_view_rendering"
+    - "lighting_variation"
+    - "background_substitution"
+    - "scale_normalization"
+  
+# Validation and Testing
+validation:
+  cross_dataset_validation: true  # Test Pix3D models on ShapeNet data and vice versa
+  geometric_consistency_check: true
+  semantic_consistency_check: true
+  
+# Output Format Specifications
+output_format:
+  image_formats: ["jpg", "png"]
+  model_formats: ["obj", "ply"]
+  metadata_format: "json"
+  compression: "none"  # Keep uncompressed for quality

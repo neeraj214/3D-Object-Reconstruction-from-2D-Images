@@ -1,0 +1,170 @@
+{
+  "experiment_name": "multi_dataset_joint_training",
+  "description": "Joint training on all 6 datasets with domain adaptation",
+  
+  "dataset": {
+    "datasets": ["pix3d", "shapenet", "pascal3d", "objectnet3d", "co3d", "google_scanned"],
+    "data_paths": {
+      "pix3d": "data/pix3d",
+      "shapenet": "data/shapenet",
+      "pascal3d": "data/pascal3d",
+      "objectnet3d": "data/objectnet3d",
+      "co3d": "data/co3d",
+      "google_scanned": "data/google_scanned"
+    },
+    "image_size": 224,
+    "num_points": 2048,
+    "augment": true,
+    "normalize": true
+  },
+  
+  "model": {
+    "encoder_type": "resnet50",
+    "decoder_type": "point_transformer",
+    "output_representation": "point_cloud",
+    "num_points": 2048,
+    "voxel_resolution": 64,
+    "use_attention": true,
+    "uncertainty_quantification": true,
+    "domain_adaptation": true,
+    "dropout": 0.1
+  },
+  
+  "domain_adaptation": {
+    "task_weight": 1.0,
+    "domain_weight": 0.1,
+    "consistency_weight": 0.5,
+    "num_domains": 6,
+    "feature_dim": 512,
+    "hidden_dim": 256,
+    "grl_alpha": 1.0
+  },
+  
+  "training": {
+    "num_epochs": 150,
+    "batch_size": 16,
+    "num_workers": 4,
+    "batches_per_epoch": 200,
+    "grad_clip": 1.0,
+    "save_frequency": 10,
+    "eval_frequency": 5,
+    "export_frequency": 25,
+    "mixed_precision": true,
+    "dataset_sampling": "weighted",
+    "dataset_weights": {
+      "pix3d": 1.0,
+      "shapenet": 1.2,
+      "pascal3d": 0.9,
+      "objectnet3d": 0.9,
+      "co3d": 1.1,
+      "google_scanned": 1.0
+    }
+  },
+  
+  "optimizer": {
+    "learning_rate": 1e-4,
+    "weight_decay": 1e-4,
+    "betas": [0.9, 0.999]
+  },
+  
+  "scheduler": {
+    "type": "cosine_annealing_warm_restarts",
+    "T_0": 15,
+    "T_mult": 2,
+    "eta_min": 1e-6
+  },
+  
+  "loss": {
+    "reconstruction_weight": 1.0,
+    "uncertainty_weight": 0.001,
+    "regularization_weight": 0.01
+  },
+  
+  "evaluation": {
+    "metrics": ["chamfer_distance", "emd", "f_score", "iou", "hausdorff_distance"],
+    "num_points": 2048,
+    "thresholds": [0.01, 0.02, 0.05, 0.1],
+    "visualize": true,
+    "save_predictions": true
+  },
+  
+  "output_dir": "experiments/multi_dataset_training",
+  
+  "logging": {
+    "level": "INFO",
+    "save_logs": true,
+    "tensorboard": true,
+    "wandb": {
+      "enabled": false,
+      "project": "3d-reconstruction-multi-dataset",
+      "entity": "your-entity",
+      "tags": ["multi-dataset", "domain-adaptation", "3d-reconstruction"]
+    }
+  },
+  
+  "data_augmentation": {
+    "enabled": true,
+    "image_augmentations": {
+      "random_crop": true,
+      "random_flip": true,
+      "color_jitter": {
+        "brightness": 0.2,
+        "contrast": 0.2,
+        "saturation": 0.2,
+        "hue": 0.1
+      },
+      "gaussian_noise": {
+        "std": 0.01
+      },
+      "random_rotation": 10,
+      "random_translation": 0.1
+    },
+    "point_cloud_augmentations": {
+      "random_rotation": true,
+      "random_translation": 0.05,
+      "random_scaling": [0.9, 1.1],
+      "random_dropout": 0.1,
+      "gaussian_noise": 0.01
+    }
+  },
+  
+  "early_stopping": {
+    "enabled": true,
+    "patience": 20,
+    "min_delta": 0.001,
+    "monitor": "avg_val_total_loss",
+    "restore_best_weights": true
+  },
+  
+  "model_export": {
+    "export_formats": ["onnx", "tensorrt", "coreml"],
+    "onnx": {
+      "opset_version": 11,
+      "dynamic_axes": true,
+      "optimize": true
+    },
+    "tensorrt": {
+      "precision": "fp16",
+      "max_workspace_size": 2147483648,
+      "max_batch_size": 32
+    },
+    "coreml": {
+      "minimum_deployment_target": "13.0",
+      "compute_precision": "float16"
+    }
+  },
+  
+  "uncertainty": {
+    "enabled": true,
+    "monte_carlo_samples": 10,
+    "dropout_rate": 0.1,
+    "temperature_scaling": true
+  },
+  
+  "performance": {
+    "mixed_precision": true,
+    "compile_model": false,
+    "optimize_inference": true,
+    "batch_size_inference": 32
+  }
+}

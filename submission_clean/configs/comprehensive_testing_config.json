@@ -1,0 +1,107 @@
+{
+  "experiment_name": "comprehensive_testing_all_datasets",
+  "description": "Comprehensive testing on all 6 datasets with uncertainty estimation",
+  
+  "dataset": {
+    "datasets": ["pix3d", "shapenet", "pascal3d", "objectnet3d", "co3d", "google_scanned"],
+    "data_paths": {
+      "pix3d": "data/pix3d",
+      "shapenet": "data/shapenet",
+      "pascal3d": "data/pascal3d",
+      "objectnet3d": "data/objectnet3d",
+      "co3d": "data/co3d",
+      "google_scanned": "data/google_scanned"
+    },
+    "image_size": 224,
+    "num_points": 2048,
+    "normalize": true
+  },
+  
+  "model": {
+    "encoder_type": "resnet50",
+    "decoder_type": "point_transformer",
+    "output_representation": "point_cloud",
+    "num_points": 2048,
+    "voxel_resolution": 64,
+    "use_attention": true,
+    "uncertainty_quantification": true,
+    "dropout": 0.1
+  },
+  
+  "testing": {
+    "batch_size": 16,
+    "num_workers": 4,
+    "save_detailed_predictions": true,
+    "max_samples_per_dataset": 1000,
+    "random_seed": 42
+  },
+  
+  "uncertainty_estimation": {
+    "enabled": true,
+    "num_monte_carlo_samples": 20,
+    "dropout_rate": 0.1,
+    "temperature_scaling": false,
+    "calibration_method": "platt_scaling"
+  },
+  
+  "evaluation": {
+    "metrics": [
+      "chamfer_distance",
+      "earth_movers_distance",
+      "f_score",
+      "iou",
+      "hausdorff_distance",
+      "point_to_mesh_distance",
+      "normal_consistency",
+      "completeness",
+      "accuracy"
+    ],
+    "num_points": 2048,
+    "thresholds": [0.01, 0.02, 0.05, 0.1, 0.2],
+    "visualize": true,
+    "save_predictions": true,
+    "compute_per_class_metrics": true
+  },
+  
+  "output_dir": "experiments/comprehensive_testing",
+  
+  "logging": {
+    "level": "INFO",
+    "save_logs": true,
+    "log_predictions": false,
+    "log_uncertainty": true
+  },
+  
+  "visualization": {
+    "create_plots": true,
+    "plot_formats": ["png", "pdf"],
+    "dpi": 300,
+    "figsize": [12, 8],
+    "color_palette": "viridis",
+    "style": "seaborn"
+  },
+  
+  "analysis": {
+    "compute_calibration_metrics": true,
+    "compute_correlation_analysis": true,
+    "generate_reliability_diagrams": true,
+    "perform_statistical_tests": true,
+    "create_confusion_matrices": false
+  },
+  
+  "performance": {
+    "use_gpu": true,
+    "mixed_precision": true,
+    "optimize_inference": true,
+    "batch_size_inference": 32,
+    "num_threads": 4
+  },
+  
+  "report": {
+    "generate_markdown_report": true,
+    "include_detailed_results": true,
+    "include_uncertainty_analysis": true,
+    "include_visualizations": true,
+    "latex_support": false
+  }
+}

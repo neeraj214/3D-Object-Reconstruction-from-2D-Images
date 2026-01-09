@@ -1,0 +1,22 @@
+{
+  "epochs": 30,
+  "batch": 8,
+  "points_coarse": 1024,
+  "points_refined": 4096,
+  "lr": 0.0005,
+  "lr_schedule": "cosine",
+  "loss_weights": {
+    "chamfer": 0.5,
+    "fscore": 0.2,
+    "normal": 0.15,
+    "laplacian": 0.1,
+    "perceptual": 0.05,
+    "p2s": 0.15
+  },
+  "augmentations": {
+    "color_jitter": true,
+    "random_crop": true,
+    "random_flip": true,
+    "depth_noise": true
+  }
+}

@@ -1,0 +1,6 @@
+fx: 1000.0
+fy: 1000.0
+cx: 192.0
+cy: 192.0
+points: 8192
+output_dir: results/reconstructions
