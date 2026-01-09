@@ -1,10 +1,12 @@
 # 🧊 3D Object Reconstruction from 2D Images 🚀
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c?style=for-the-badge&logo=pytorch)
-![React](https://img.shields.io/badge/React-18-61dafb?style=for-the-badge&logo=react)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-009688?style=for-the-badge&logo=fastapi)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Enabled-blue?style=for-the-badge)
+![Deep Learning](https://img.shields.io/badge/Deep%20Learning-CNN-orange?style=for-the-badge)
+![Open3D](https://img.shields.io/badge/Open3D-3D%20Visualization-0099cc?style=for-the-badge)
+![PyTorch](https://img.shields.io/badge/PyTorch-Framework-ee4c2c?style=for-the-badge)
+![Point Cloud](https://img.shields.io/badge/3D-Point%20Cloud-red?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
 > **Single-View 3D Reconstruction using Deep Learning and Point Clouds.**
