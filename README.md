@@ -167,7 +167,7 @@ Model performance is evaluated using standard 3D reconstruction metrics (lower i
 ## 10. 👨‍💻 Author
 
 **Neeraj**
-*   [GitHub Profile](https://github.com/yourusername)
+*   [GitHub Profile](https://github.com/neeraj214)
 
 ---
 *Built with ❤️ using PyTorch and React.*
