@@ -12,10 +12,24 @@ def planar_uv(mesh):
     except Exception:
         return None
 
-def project_texture_front(image_path, resolution=1024):
-    img = Image.open(image_path).convert('RGB')
-    img = img.resize((resolution, resolution))
-    return img
+def project_texture_front(image_or_path, resolution=1024):
+    try:
+        if isinstance(image_or_path, (str, Path)):
+            img = Image.open(image_or_path).convert('RGB')
+        else:
+            import cv2
+            arr = image_or_path
+            if isinstance(arr, np.ndarray):
+                if arr.ndim == 3 and arr.shape[2] == 3:
+                    img = Image.fromarray(cv2.cvtColor(arr, cv2.COLOR_BGR2RGB))
+                else:
+                    img = Image.fromarray(arr).convert('RGB')
+            else:
+                return None
+        img = img.resize((resolution, resolution))
+        return img
+    except Exception:
+        return None
 
 def write_obj_with_mtl(mesh, uv, texture_img, out_obj):
     out_obj = Path(out_obj)
