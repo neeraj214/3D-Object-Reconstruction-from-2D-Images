@@ -17,18 +17,50 @@ def compute_intrinsics(h: int, w: int, f_scale: float = 1.0):
 class UnifiedMultiviewDataset(Dataset):
     def __init__(self, annotations_path: str, split: str = "train", num_points: int = 2048, image_size: int = 224, augment: bool = True, max_items: int = None):
         p = Path(annotations_path)
-        all_items = json.loads(p.read_text())
+        data = json.loads(p.read_text())
 
-        # Deterministic shuffle for consistent train/val splits
-        import random
-        random.Random(42).shuffle(all_items)
+        if isinstance(data, dict):
+            splits = data.get("items")
+            if isinstance(splits, dict):
+                selected = splits.get(split)
+                if selected is None:
+                    merged = []
+                    for v in splits.values():
+                        if isinstance(v, list):
+                            merged.extend(v)
+                    self.items: List[Dict[str, Any]] = merged
+                else:
+                    self.items = list(selected)
+            else:
+                split_dict = {}
+                for k, v in data.items():
+                    if isinstance(v, list):
+                        split_dict[k] = v
+                if split in split_dict:
+                    self.items = list(split_dict[split])
+                else:
+                    merged = []
+                    for v in split_dict.values():
+                        merged.extend(v)
+                    self.items = merged
+        elif isinstance(data, list):
+            has_split_key = any(isinstance(it, dict) and "split" in it for it in data)
+            if has_split_key:
+                self.items = [it for it in data if it.get("split") == split]
+                if not self.items:
+                    self.items = list(data)
+            else:
+                import random
+                shuffled = list(data)
+                random.Random(42).shuffle(shuffled)
+                split_index = int(len(shuffled) * 0.8)
+                if split == "train":
+                    self.items = shuffled[:split_index]
+                else:
+                    self.items = shuffled[split_index:]
+        else:
+            self.items = []
 
-        split_index = int(len(all_items) * 0.8)
-
-        if split == "train":
-            self.items: List[Dict[str, Any]] = all_items[:split_index]
-        else: # "val" or any other split will go to validation
-            self.items: List[Dict[str, Any]] = all_items[split_index:]
         if max_items is not None:
             self.items = self.items[:int(max_items)]
 
