@@ -54,8 +54,6 @@ def run(pix3d_root, out_root):
     with open(split_file, 'w') as f:
         json.dump({'counts': {k: len(v) for k, v in splits.items()}}, f)
 
-import shutil
-
     for split, items in splits.items():
         for i, (rgb_src, mask_src, mesh_src) in enumerate(items):
             rgb_dst = rgb_out / f'{split}_{i}.png'
