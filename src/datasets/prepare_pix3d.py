@@ -54,6 +54,8 @@ def run(pix3d_root, out_root):
     with open(split_file, 'w') as f:
         json.dump({'counts': {k: len(v) for k, v in splits.items()}}, f)
 
+import shutil
+
     for split, items in splits.items():
         for i, (rgb_src, mask_src, mesh_src) in enumerate(items):
             rgb_dst = rgb_out / f'{split}_{i}.png'
@@ -63,9 +65,9 @@ def run(pix3d_root, out_root):
                 Path(rgb_dst).parent.mkdir(parents=True, exist_ok=True)
                 Path(mask_dst).parent.mkdir(parents=True, exist_ok=True)
                 Path(mesh_dst).parent.mkdir(parents=True, exist_ok=True)
-                os.replace(str(rgb_src), str(rgb_dst))
-                os.replace(str(mask_src), str(mask_dst))
-                os.replace(str(mesh_src), str(mesh_dst))
+                shutil.copy(str(rgb_src), str(rgb_dst))
+                shutil.copy(str(mask_src), str(mask_dst))
+                shutil.copy(str(mesh_src), str(mesh_dst))
                 pts = _sample_points_from_mesh(mesh_dst, 8192)
                 np.save(pcd_out / f'{split}_{i}.npy', pts)
             except Exception:

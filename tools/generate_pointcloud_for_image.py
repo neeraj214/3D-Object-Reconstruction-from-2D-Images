@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Ensure project root is on path
 sys.path.append(os.path.abspath('.'))
 
-from src.utils.pointcloud_utils import generate_point_cloud_from_image
+from src.training.utils.pointcloud_utils import generate_point_cloud_from_image
 
 def main():
     if len(sys.argv) < 5:
