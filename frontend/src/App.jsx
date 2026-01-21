@@ -7,7 +7,6 @@ import DatasetBrowser from './pages/DatasetBrowser.jsx'
 import CategoryView from './pages/CategoryView.jsx'
 
 export default function App() {
-  const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState(null)
   const [datasets, setDatasets] = useState(null)
   const location = useLocation()
@@ -18,26 +17,98 @@ export default function App() {
     })();
   }, []);
 
+  const navLinks = [
+    { name: 'Upload & Reconstruct', path: '/upload' },
+    { name: 'Dataset Browser', path: '/datasets' },
+  ]
+
   return (
-    <div className="p-4 font-sans">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">3D Reconstruction</h2>
-        <div className="flex gap-2">
-          <Link className="btn" to="/upload">Upload</Link>
-          <Link className="btn" to="/datasets">Dataset Browser</Link>
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans flex flex-col">
+      {/* Navigation Bar */}
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <Link to="/" className="flex-shrink-0 flex items-center gap-2">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                  3D
+                </div>
+                <span className="font-bold text-xl tracking-tight text-gray-900">Reconstruct<span className="text-blue-600">AI</span></span>
+              </Link>
+              <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200 ${
+                      location.pathname.startsWith(link.path) || (link.path === '/upload' && location.pathname === '/')
+                        ? 'border-blue-500 text-gray-900'
+                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center">
+               {/* Placeholder for future user profile or settings */}
+               <div className="text-sm text-gray-400">v1.0.0</div>
+            </div>
+          </div>
         </div>
-      </div>
-      {toast && <div className={`p-2 rounded ${toast.type==='error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>{toast.message}</div>}
-      <AnimatePresence mode="wait">
-        <motion.div key={location.pathname} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }}>
-          <Routes location={location}>
-            <Route path="/" element={<Upload />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/datasets" element={<DatasetBrowser datasets={datasets} />} />
-            <Route path="/datasets/:dataset/:category" element={<CategoryView />} />
-          </Routes>
-        </motion.div>
-      </AnimatePresence>
+      </nav>
+
+      {/* Main Content */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* Toast Notification */}
+        <AnimatePresence>
+          {toast && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`fixed top-20 right-4 z-50 px-4 py-3 rounded-lg shadow-lg border flex items-center gap-3 ${
+                toast.type === 'error' 
+                  ? 'bg-red-50 border-red-200 text-red-700' 
+                  : 'bg-green-50 border-green-200 text-green-700'
+              }`}
+            >
+              <span>{toast.message}</span>
+              <button onClick={() => setToast(null)} className="opacity-50 hover:opacity-100">×</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Page Transition Wrapper */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full"
+          >
+            <Routes location={location}>
+              <Route path="/" element={<Upload setToast={setToast} />} />
+              <Route path="/upload" element={<Upload setToast={setToast} />} />
+              <Route path="/datasets" element={<DatasetBrowser datasets={datasets} />} />
+              <Route path="/datasets/:dataset/:category" element={<CategoryView />} />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <p className="text-center text-sm text-gray-400">
+            © 2025 3D Reconstruction Project. Powered by PyTorch & Three.js.
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }

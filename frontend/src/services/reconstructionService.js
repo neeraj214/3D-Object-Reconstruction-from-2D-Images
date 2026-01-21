@@ -18,6 +18,21 @@ export async function reconstruct(file, options = {}) {
   return r.data
 }
 
+export async function reconstructMesh(file, options = {}) {
+  const { nPoints = 40000, depth = 10, smoothIter = 15, simplifyFaces = 15000, texture = true } = options
+  const form = new FormData()
+  form.append('file', file)
+  const params = new URLSearchParams({ 
+    n_points: String(nPoints), 
+    depth: String(depth), 
+    smooth_iter: String(smoothIter), 
+    simplify_faces: String(simplifyFaces),
+    texture: texture ? 'true' : 'false'
+  })
+  const r = await api.post(`/api/reconstruct-mesh?${params.toString()}`, form, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return r.data
+}
+
 export async function train(config = {}) {
   const r = await api.post('/train', config)
   return r.data
