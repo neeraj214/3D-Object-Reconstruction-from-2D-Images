@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 html, body, #root { height: 100%; }
-body { @apply bg-gray-50 text-gray-900; }
-.btn { @apply px-3 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition; }
-.card { @apply bg-white rounded-lg shadow p-4; }
+body { @apply bg-gradient-to-b from-blue-50/40 to-white text-gray-900 font-sans; }
+.btn { @apply inline-flex items-center justify-center px-3 py-2 rounded-lg bg-brand-primary text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 transition-shadow shadow-soft hover:shadow-brand; }
+.btn-primary { @apply bg-brand-primary text-white hover:bg-blue-700; }
+.btn-ghost { @apply bg-transparent text-gray-700 hover:bg-gray-100; }
+.card { @apply bg-white rounded-xl shadow-soft p-4 border border-gray-100; }
