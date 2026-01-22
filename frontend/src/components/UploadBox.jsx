@@ -12,6 +12,7 @@ export default function UploadBox({ onResult }) {
   const [fScale, setFScale] = useState(1.1)
   const [mode, setMode] = useState('quality') // Default to quality for better results
   const [nPoints, setNPoints] = useState(20000)
+  const [showAdvanced, setShowAdvanced] = useState(false)
 
   const submit = async () => {
     if (!file) {
@@ -53,13 +54,22 @@ export default function UploadBox({ onResult }) {
         {/* Configuration Panel */}
         <div className="bg-gray-50 rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between">
-             <span className="text-sm font-medium text-gray-700">Settings</span>
+             <span className="text-sm font-medium text-gray-700">Reconstruction Controls</span>
+             <button 
+               type="button" 
+               className="text-xs px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
+               onClick={() => setShowAdvanced(v => !v)}
+               aria-expanded={showAdvanced}
+               title="Show advanced options"
+             >
+               {showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
+             </button>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Mode Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Quality Mode</label>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Choose speed vs quality tradeoff">Quality Mode</label>
               <div className="flex bg-white rounded-md shadow-sm p-1 border border-gray-200">
                 {['fast', 'balanced', 'quality', 'mesh'].map((m) => (
                   <button
@@ -80,7 +90,7 @@ export default function UploadBox({ onResult }) {
             {/* Focal Scale Slider */}
             <div className="space-y-2">
                <div className="flex justify-between">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Focal Scale</label>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Adjust synthetic camera focal length">Focal Scale</label>
                   <span className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded">{fScale.toFixed(2)}</span>
                </div>
                <input 
@@ -97,7 +107,7 @@ export default function UploadBox({ onResult }) {
              {/* Point Count */}
              <div className="space-y-2">
                <div className="flex justify-between">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Point Count</label>
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Number of points in output point cloud">Point Count</label>
                   <span className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded">{nPoints.toLocaleString()}</span>
                </div>
                <input 
@@ -111,19 +121,24 @@ export default function UploadBox({ onResult }) {
                />
             </div>
 
-            {/* Toggles */}
-            <div className="flex items-center space-x-3 pt-6">
-               <input 
-                 id="seg-toggle"
-                 type="checkbox" 
-                 checked={useSegmentation} 
-                 onChange={e => setUseSegmentation(e.target.checked)}
-                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-               />
-               <label htmlFor="seg-toggle" className="text-sm text-gray-700 cursor-pointer select-none">
-                 Enable Background Removal (Segmentation)
-               </label>
-            </div>
+            {/* Advanced Options */}
+            {showAdvanced && (
+              <div className="md:col-span-2 space-y-3 pt-4">
+                <div className="flex items-center space-x-3">
+                  <input 
+                    id="seg-toggle"
+                    type="checkbox" 
+                    checked={useSegmentation} 
+                    onChange={e => setUseSegmentation(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label htmlFor="seg-toggle" className="text-sm text-gray-700 cursor-pointer select-none" title="Removes background to improve reconstruction focus">
+                    Enable Background Removal (Segmentation)
+                  </label>
+                </div>
+                <p className="text-xs text-gray-500">Advanced options may increase processing time.</p>
+              </div>
+            )}
           </div>
         </div>
 
