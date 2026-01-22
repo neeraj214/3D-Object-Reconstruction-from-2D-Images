@@ -27,13 +27,16 @@ export default function App() {
       {/* Navigation Bar */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-16 sm:h-20">
             <div className="flex items-center">
-              <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                  3D
+              <Link to="/" className="flex-shrink-0 flex flex-col">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                    3D
+                  </div>
+                  <span className="font-bold text-xl tracking-tight text-gray-900">Reconstruct<span className="text-blue-600">AI</span></span>
                 </div>
-                <span className="font-bold text-xl tracking-tight text-gray-900">Reconstruct<span className="text-blue-600">AI</span></span>
+                <span className="text-xs text-brand-muted mt-0.5">Single‑view 3D reconstruction</span>
               </Link>
               <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
                 {navLinks.map((link) => (
@@ -51,9 +54,12 @@ export default function App() {
                 ))}
               </div>
             </div>
-            <div className="flex items-center">
-               {/* Placeholder for future user profile or settings */}
+            <div className="flex items-center gap-3">
                <div className="text-sm text-gray-400">v1.0.0</div>
+               <div className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                 <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                 <span>API</span>
+               </div>
             </div>
           </div>
         </div>
