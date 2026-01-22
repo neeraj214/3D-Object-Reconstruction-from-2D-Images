@@ -38,18 +38,20 @@ export default function UploadBox({ onResult }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
       <div className="p-6 border-b border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-800">New Reconstruction</h3>
-        <p className="text-sm text-gray-500 mt-1">Upload a 2D image to generate a 3D point cloud.</p>
+        <h3 className="text-lg font-semibold text-gray-900">Start a Reconstruction</h3>
+        <p className="text-sm text-gray-600 mt-1">Drag & drop or browse an image to reconstruct a 3D model.</p>
       </div>
       
       <div className="p-6 space-y-6">
         {/* Image Upload Area */}
-        <ImageUpload onSubmit={f => { setFile(f); setErr(null); }} />
+        <div className="group rounded-xl ring-1 ring-blue-100 hover:ring-blue-300 transition-shadow shadow-soft hover:shadow-brand">
+          <ImageUpload onSubmit={f => { setFile(f); setErr(null); }} />
+        </div>
 
         {/* Configuration Panel */}
-        <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+        <div className="bg-gray-50 rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between">
              <span className="text-sm font-medium text-gray-700">Settings</span>
           </div>
