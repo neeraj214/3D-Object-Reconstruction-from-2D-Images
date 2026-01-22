@@ -145,13 +145,14 @@ export default function UploadBox({ onResult }) {
         {/* Action Button */}
         <div className="pt-2">
           <button 
-            className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 ${
+            className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all transform active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 flex items-center justify-center gap-2 ${
               busy || !file 
                 ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-blue-500/30'
+                : 'bg-gradient-to-r from-brand-primary to-blue-700 shadow-lg hover:shadow-brand'
             }`}
             onClick={submit}
             disabled={busy || !file}
+            aria-busy={busy}
           >
             {busy ? (
               <>
