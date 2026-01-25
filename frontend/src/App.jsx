@@ -68,27 +68,29 @@ export default function App() {
               transition={{ delay: 0.15, duration: 0.6 }}
               className="relative"
             >
-              <div className="relative rounded-2xl bg-white/70 backdrop-blur-md border border-indigo-100 shadow-soft p-6">
+              <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-indigo-100 shadow-soft p-6">
                 <div className="text-sm font-semibold text-gray-700 mb-4">Image → 3D Transformation</div>
-                <div className="relative h-56 overflow-hidden">
-                  <div className="absolute inset-0 grid grid-cols-12 gap-2">
-                    {[...Array(96)].map((_, i) => (
-                      <motion.div 
-                        key={i} 
-                        className="w-2 h-2 rounded-full" 
-                        style={{ backgroundColor: `hsl(${230 + (i%24)}, 70%, ${60 + (i%6)*4}%)` }}
-                        animate={{ y: [0, -2, 2, 0] }}
-                        transition={{ duration: 4, repeat: Infinity, delay: i * 0.02, ease: 'easeInOut' }}
-                      />
-                    ))}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="rounded-xl ring-1 ring-indigo-100 bg-gradient-to-r from-indigo-50 to-violet-50 p-4 shadow-inner"
+                >
+                  <div className="grid grid-cols-10 gap-x-4 gap-y-3 justify-items-center">
+                    {[...Array(60)].map((_, i) => {
+                      const col = i % 10
+                      const hue = 230 + col * 3
+                      const light = 58 + col * 2
+                      return (
+                        <div 
+                          key={i} 
+                          className="w-2.5 h-2.5 rounded-full" 
+                          style={{ backgroundColor: `hsl(${hue}, 80%, ${light}%)` }}
+                        />
+                      )
+                    })}
                   </div>
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-violet-500/10 rounded-xl" 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                  />
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </motion.div>
