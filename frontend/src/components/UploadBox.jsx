@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ImageUpload from './ImageUpload.jsx'
 import { predict, reconstructMesh } from '../api/backend'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function UploadBox({ onResult }) {
   const [file, setFile] = useState(null)
@@ -40,39 +41,49 @@ export default function UploadBox({ onResult }) {
 
   return (
     <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900">Start a Reconstruction</h3>
-        <p className="text-sm text-gray-600 mt-1">Drag & drop or browse an image to reconstruct a 3D model.</p>
+      <div className="p-8 border-b border-gray-100">
+        <h3 className="text-2xl font-bold text-gray-900">Start a Reconstruction</h3>
+        <p className="text-sm text-gray-600 mt-2">Upload an image and generate a high-quality 3D point cloud.</p>
       </div>
       
-      <div className="p-6 space-y-6">
+      <div className="p-8 space-y-8">
         {/* Image Upload Area */}
-        <div className="group rounded-xl ring-1 ring-blue-100 hover:ring-blue-300 transition-shadow shadow-soft hover:shadow-brand">
+        <div className="relative group rounded-2xl ring-1 ring-blue-100 hover:ring-blue-300 transition-all shadow-soft hover:shadow-brand p-4 min-h-48">
           <ImageUpload onSubmit={f => { setFile(f); setErr(null); }} />
+          {busy && (
+            <div className="absolute inset-0 z-10 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 opacity-60 animate-pulse pointer-events-none"></div>
+          )}
         </div>
 
         {/* Configuration Panel */}
-        <div className="bg-gray-50 rounded-xl p-4 space-y-4">
+        <div className="bg-gray-50 rounded-xl p-6 space-y-6">
           <div className="flex items-center justify-between">
-             <span className="text-sm font-medium text-gray-700">Reconstruction Controls</span>
+             <span className="text-base font-semibold text-gray-800">Reconstruction Controls</span>
              <button 
                type="button" 
                className="text-xs px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
                onClick={() => setShowAdvanced(v => !v)}
                aria-expanded={showAdvanced}
-               title="Show advanced options"
+               title={showAdvanced ? 'Hide advanced options' : 'Show advanced options'}
              >
                {showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
              </button>
+          </div>
+         
+          <div className="space-y-4">
+            <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">Basic</div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Mode Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Choose speed vs quality tradeoff">Quality Mode</label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Choose speed vs quality tradeoff">Quality Mode</label>
+                <span className="text-xs text-gray-500">{mode === 'mesh' ? 'Mesh Output' : 'Point Cloud'}</span>
+              </div>
               <div className="flex bg-white rounded-md shadow-sm p-1 border border-gray-200">
                 {['fast', 'balanced', 'quality', 'mesh'].map((m) => (
-                  <button
+                  <motion.button
                     key={m}
                     onClick={() => setMode(m)}
                     className={`flex-1 text-sm py-1.5 rounded transition-all ${
@@ -80,9 +91,13 @@ export default function UploadBox({ onResult }) {
                         ? 'bg-blue-600 text-white shadow-sm' 
                         : 'text-gray-600 hover:bg-gray-100'
                     }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    layout
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                   >
                     {m.charAt(0).toUpperCase() + m.slice(1)}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -91,9 +106,16 @@ export default function UploadBox({ onResult }) {
             <div className="space-y-2">
                <div className="flex justify-between">
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Adjust synthetic camera focal length">Focal Scale</label>
-                  <span className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded">{fScale.toFixed(2)}</span>
+                  <motion.span 
+                    key={fScale}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded"
+                  >
+                    {fScale.toFixed(2)}
+                  </motion.span>
                </div>
-               <input 
+               <motion.input 
                  type="range" 
                  min="0.8" 
                  max="1.4" 
@@ -101,6 +123,9 @@ export default function UploadBox({ onResult }) {
                  value={fScale} 
                  onChange={e => setFScale(parseFloat(e.target.value))}
                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                 title="Higher values increase synthetic focal length and perceived depth"
+                 whileHover={{ scaleY: 1.05 }}
+                 transition={{ type: 'spring', stiffness: 250, damping: 20 }}
                />
             </div>
 
@@ -108,9 +133,16 @@ export default function UploadBox({ onResult }) {
              <div className="space-y-2">
                <div className="flex justify-between">
                   <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Number of points in output point cloud">Point Count</label>
-                  <span className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded">{nPoints.toLocaleString()}</span>
+                  <motion.span
+                    key={nPoints}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded"
+                  >
+                    {nPoints.toLocaleString()}
+                  </motion.span>
                </div>
-               <input 
+               <motion.input 
                  type="range" 
                  min="5000" 
                  max="50000" 
@@ -118,27 +150,53 @@ export default function UploadBox({ onResult }) {
                  value={nPoints} 
                  onChange={e => setNPoints(parseInt(e.target.value))}
                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                 title="Increase for denser point clouds, at the cost of time"
+                 whileHover={{ scaleY: 1.05 }}
+                 transition={{ type: 'spring', stiffness: 250, damping: 20 }}
                />
             </div>
 
             {/* Advanced Options */}
+            <AnimatePresence initial={false}>
             {showAdvanced && (
-              <div className="md:col-span-2 space-y-3 pt-4">
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="md:col-span-2 space-y-3 pt-4"
+              >
+                <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Advanced</div>
                 <div className="flex items-center space-x-3">
-                  <input 
+                  <motion.input 
                     id="seg-toggle"
                     type="checkbox" 
                     checked={useSegmentation} 
                     onChange={e => setUseSegmentation(e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    whileTap={{ scale: 0.9 }}
                   />
-                  <label htmlFor="seg-toggle" className="text-sm text-gray-700 cursor-pointer select-none" title="Removes background to improve reconstruction focus">
+                  <motion.label 
+                    htmlFor="seg-toggle" 
+                    className="text-sm text-gray-700 cursor-pointer select-none" 
+                    title="Removes background to improve reconstruction focus"
+                    initial={false}
+                    animate={{ color: useSegmentation ? '#1f2937' : '#6b7280' }}
+                    transition={{ duration: 0.2 }}
+                  >
                     Enable Background Removal (Segmentation)
-                  </label>
+                  </motion.label>
+                  {useSegmentation && (
+                    <span className="relative inline-flex">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-40 animate-ping"></span>
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-gray-500">Advanced options may increase processing time.</p>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
         </div>
 

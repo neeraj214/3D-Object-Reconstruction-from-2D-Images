@@ -62,10 +62,10 @@ export default function ImageUpload({ onSubmit }) {
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={`
-          relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-200 group
+          relative border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all duration-300 group
           ${isDragging 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50'
+            ? 'border-indigo-500 bg-indigo-50 shadow-brand' 
+            : 'border-gray-300 hover:border-indigo-400 hover:bg-indigo-50/30 hover:shadow-soft'
           }
           ${preview ? 'border-solid border-blue-200 bg-gray-50' : ''}
         `}
@@ -89,7 +89,7 @@ export default function ImageUpload({ onSubmit }) {
               <img 
                 src={preview} 
                 alt="Preview" 
-                className="max-h-64 mx-auto rounded-lg shadow-md object-contain" 
+                className="max-h-72 mx-auto rounded-xl shadow-soft object-contain" 
               />
               <button 
                 onClick={clearFile}
@@ -111,13 +111,13 @@ export default function ImageUpload({ onSubmit }) {
               exit={{ opacity: 0 }}
               className="space-y-4"
             >
-              <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center transition-colors ${isDragging ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400 group-hover:text-blue-500 group-hover:bg-blue-50'}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <motion.div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center transition-colors ${isDragging ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-400 group-hover:text-indigo-600 group-hover:bg-indigo-50'}`} whileHover={{ scale: 1.05 }}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-              </div>
+              </motion.div>
               <div className="text-gray-600">
-                <span className="font-medium text-blue-600 hover:text-blue-500">Click to upload</span>
+                <span className="font-medium text-indigo-600 hover:text-indigo-500">Click to upload</span>
                 <span className="text-gray-500"> or drag and drop</span>
               </div>
               <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB</p>
