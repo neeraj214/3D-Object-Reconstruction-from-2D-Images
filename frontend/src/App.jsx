@@ -97,11 +97,21 @@ export default function App() {
               <div className="relative rounded-3xl bg-white/60 backdrop-blur-xl border border-white/20 ring-1 ring-indigo-200 shadow-soft p-6">
                 <div className="text-sm font-semibold text-gray-700 mb-4">Image → 3D Wireframe</div>
                 <div className="grid grid-cols-2 gap-6 items-center">
-                  <img
-                    src="https://images.unsplash.com/photo-1549187774-b4e9b0445b06?q=80&w=800&auto=format&fit=crop"
-                    alt="Luxury chair"
-                    className="rounded-2xl h-56 w-full object-cover border border-indigo-100"
-                  />
+                  <div className="relative rounded-2xl h-56 w-full overflow-hidden border border-indigo-100 bg-white/60">
+                    <img
+                      src="https://images.unsplash.com/photo-1549187774-b4e9b0445b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Luxury chair"
+                      className="h-full w-full object-cover"
+                      onError={(e) => { e.currentTarget.src = 'https://picsum.photos/id/1069/800/600'; }}
+                    />
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-35 mix-blend-soft-light" viewBox="0 0 200 200" fill="none">
+                      <circle cx="100" cy="100" r="90" stroke="#22d3ee" strokeOpacity="0.35" strokeWidth="0.8" />
+                      {[...Array(10)].map((_, i) => (
+                        <ellipse key={i} cx="100" cy="100" rx="90" ry="28" transform={`rotate(${i*18} 100 100)`} stroke="#22d3ee" strokeOpacity="0.25" strokeWidth="0.7" />
+                      ))}
+                    </svg>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-400/10 to-indigo-500/10"></div>
+                  </div>
                   <motion.div 
                     initial={{ rotate: -8 }} 
                     animate={{ rotate: 8 }} 
