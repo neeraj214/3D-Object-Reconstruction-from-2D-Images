@@ -25,10 +25,20 @@ export default function App() {
   const Home = () => {
     return (
       <div className="w-full">
-        <section className="relative overflow-hidden rounded-3xl px-10 py-16 sm:px-14 sm:py-20 shadow-soft border border-indigo-100 bg-gradient-to-br from-[#F8FAFC] via-[#F1F5FE] to-[#EEF2FF]">
+        <section className="relative overflow-hidden rounded-3xl px-10 py-16 sm:px-14 sm:py-20 shadow-soft border border-indigo-100 bg-[#f8fafc]">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-24 -left-24 w-72 h-72 bg-indigo-200/40 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-cyan-200/40 rounded-full blur-3xl"></div>
+            <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] opacity-40" viewBox="0 0 900 900" fill="none">
+              <defs>
+                <radialGradient id="mesh" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#67e8f9" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#818cf8" stopOpacity="0.15" />
+                </radialGradient>
+              </defs>
+              <circle cx="450" cy="450" r="410" stroke="url(#mesh)" strokeWidth="1" />
+              <circle cx="450" cy="450" r="330" stroke="url(#mesh)" strokeWidth="1" />
+              <circle cx="450" cy="450" r="250" stroke="url(#mesh)" strokeWidth="1" />
+              <circle cx="450" cy="450" r="170" stroke="url(#mesh)" strokeWidth="1" />
+            </svg>
           </div>
           <motion.div 
             initial={{ opacity: 0, y: 24 }}
@@ -36,20 +46,25 @@ export default function App() {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
           >
-            <motion.div className="space-y-6" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.6 }}>
+            <motion.div 
+              className="space-y-6 relative z-10"
+              initial={{ opacity: 0, x: -24 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ delay: 0.1, duration: 0.6 }}
+            >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 backdrop-blur-md border text-xs text-indigo-700 border-indigo-200">
                 <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
                 <span>AI-powered 3D Reconstruction</span>
               </div>
-              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-gray-900">
+              <h1 className="text-6xl font-extrabold tracking-tight text-gray-900">
                 3D ReconstructAI
               </h1>
-              <p className="text-lg text-gray-700 max-w-2xl">
+              <p className="text-lg text-slate-700 max-w-2xl">
                 Transform a single 2D image into a high-quality 3D point cloud using AI-powered reconstruction.
               </p>
               <div className="flex flex-wrap gap-4">
                 <motion.a whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-flex items-center gap-2 px-0">
-                  <Link to="/upload" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium shadow-lg hover:shadow-brand transition">
+                  <Link to="/upload" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium shadow-lg transition-shadow shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)]">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M3 10h4l3-3 4 8 3-5h4"/></svg>
                   Start Reconstruction
                 </Link>
@@ -68,29 +83,35 @@ export default function App() {
               transition={{ delay: 0.15, duration: 0.6 }}
               className="relative"
             >
-              <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-indigo-100 shadow-soft p-6">
+              <div className="relative rounded-3xl bg-white/70 backdrop-blur-xl border border-white/20 shadow-soft p-6">
                 <div className="text-sm font-semibold text-gray-700 mb-4">Image → 3D Transformation</div>
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className="rounded-xl ring-1 ring-indigo-100 bg-gradient-to-r from-indigo-50 to-violet-50 p-4 shadow-inner"
-                >
-                  <div className="grid grid-cols-10 gap-x-4 gap-y-3 justify-items-center">
-                    {[...Array(60)].map((_, i) => {
-                      const col = i % 10
-                      const hue = 230 + col * 3
-                      const light = 58 + col * 2
-                      return (
-                        <div 
-                          key={i} 
-                          className="w-2.5 h-2.5 rounded-full" 
-                          style={{ backgroundColor: `hsl(${hue}, 80%, ${light}%)` }}
-                        />
-                      )
-                    })}
+                <div className="grid grid-cols-2 gap-6 items-center">
+                  <img
+                    src="https://images.unsplash.com/photo-1549187774-b4e9b0445b06?q=80&w=800&auto=format&fit=crop"
+                    alt="Luxury chair"
+                    className="rounded-2xl h-56 w-full object-cover border border-indigo-100"
+                  />
+                  <div className="relative h-56 rounded-2xl ring-1 ring-indigo-100 bg-gradient-to-r from-indigo-50 to-violet-50 overflow-hidden">
+                    <div className="absolute inset-0 grid grid-cols-9 gap-4 justify-items-center">
+                      {[...Array(72)].map((_, i) => {
+                        const col = i % 9
+                        const hue = 200 + col * 6
+                        const color = `hsl(${hue}, 80%, 55%)`
+                        return <div key={i} className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+                      })}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-400/10 to-indigo-500/10"></div>
                   </div>
-                </motion.div>
+                </div>
+                <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10" viewBox="0 0 24 24" fill="none">
+                  <defs>
+                    <linearGradient id="arrowGrad" x1="0" y1="0" x2="24" y2="0">
+                      <stop offset="0%" stopColor="#22d3ee"/>
+                      <stop offset="100%" stopColor="#6366F1"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M5 12h9M12 7l5 5-5 5" stroke="url(#arrowGrad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
             </motion.div>
           </motion.div>
