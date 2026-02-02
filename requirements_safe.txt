@@ -1,0 +1,15 @@
+timm
+numpy
+opencv-python
+matplotlib
+pytorch-lightning
+pyntcloud
+scikit-learn
+tqdm
+requests
+Pillow
+PyYAML
+einops
+fastapi
+uvicorn
+python-multipart
