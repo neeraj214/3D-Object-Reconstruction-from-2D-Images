@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoRotate: initialAutoRotate=false }) {
+export default function PointCloudCanvas({ plyUrl, points, pointSize = 0.01, autoRotate: initialAutoRotate = false }) {
   const containerRef = useRef(null)
   const rendererRef = useRef(null)
   const sceneRef = useRef(null)
@@ -13,7 +13,7 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
 
   const [size, setSize] = useState(pointSize)
   const [isAutoRotate, setIsAutoRotate] = useState(initialAutoRotate)
-  
+
   // Initialize Three.js scene
   useEffect(() => {
     const container = containerRef.current
@@ -27,7 +27,7 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
 
     // Setup Scene
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x111827) // Tailwind gray-900
+    scene.background = new THREE.Color(0x050b14) // Brand darker
     sceneRef.current = scene
 
     // Setup Camera
@@ -45,7 +45,7 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
     // Helpers
     const grid = new THREE.GridHelper(2, 20, 0x374151, 0x1f2937)
     scene.add(grid)
-    
+
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
@@ -102,14 +102,14 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
       const flatPoints = points.flat() // If points is [[x,y,z],...] -> [x,y,z,...]
       // Check if it's already flat or nested
       if (points[0] && Array.isArray(points[0])) {
-         positions = new Float32Array(points.length * 3)
-         for(let i=0; i<points.length; i++) {
-            positions[i*3] = points[i][0]
-            positions[i*3+1] = points[i][1]
-            positions[i*3+2] = points[i][2]
-         }
+        positions = new Float32Array(points.length * 3)
+        for (let i = 0; i < points.length; i++) {
+          positions[i * 3] = points[i][0]
+          positions[i * 3 + 1] = points[i][1]
+          positions[i * 3 + 2] = points[i][2]
+        }
       } else {
-         positions = new Float32Array(points)
+        positions = new Float32Array(points)
       }
     } else if (plyUrl) {
       // TODO: Handle PLY fetching if needed, but for now we focus on points array
@@ -118,20 +118,21 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
     if (positions) {
       const geometry = new THREE.BufferGeometry()
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-      
+
       // Compute bounding box to center the object
       geometry.computeBoundingBox()
       const center = geometry.boundingBox.getCenter(new THREE.Vector3())
       geometry.translate(-center.x, -center.y, -center.z) // Center at origin
 
-      const material = new THREE.PointsMaterial({ 
-        size: size, 
-        color: 0x38bdf8, // Tailwind sky-400
+      const material = new THREE.PointsMaterial({
+        size: size,
+        color: 0x06b6d4, // Brand accent (Neon Cyan)
         sizeAttenuation: true,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending
       })
-      
+
       const pointCloud = new THREE.Points(geometry, material)
       scene.add(pointCloud)
       pointsRef.current = pointCloud
@@ -156,12 +157,12 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
   // Download Handler
   const handleDownload = () => {
     if (!points || points.length === 0) return
-    
+
     let content = "ply\nformat ascii 1.0\nelement vertex " + points.length + "\nproperty float x\nproperty float y\nproperty float z\nend_header\n"
     points.forEach(p => {
       content += `${p[0]} ${p[1]} ${p[2]}\n`
     })
-    
+
     const blob = new Blob([content], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -179,47 +180,47 @@ export default function PointCloudCanvas({ plyUrl, points, pointSize=0.01, autoR
   }
 
   return (
-    <div className="relative w-full h-[500px] bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-800 group">
+    <div className="relative w-full h-[500px] bg-black/40 rounded-xl overflow-hidden shadow-2xl border border-white/10 group backdrop-blur-sm">
       {/* 3D Canvas */}
       <div ref={containerRef} className="w-full h-full" />
 
       {/* Controls Overlay */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button 
+        <button
           onClick={handleResetView}
-          className="bg-gray-800/80 text-white p-2 rounded-lg hover:bg-gray-700 backdrop-blur-sm transition-colors"
+          className="bg-black/50 text-white p-2 rounded-lg hover:bg-brand-primary/20 hover:text-brand-primary border border-white/10 backdrop-blur-md transition-all"
           title="Reset View"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12" /></svg>
         </button>
-        <button 
+        <button
           onClick={() => setIsAutoRotate(!isAutoRotate)}
-          className={`p-2 rounded-lg backdrop-blur-sm transition-colors ${isAutoRotate ? 'bg-blue-600 text-white' : 'bg-gray-800/80 text-white hover:bg-gray-700'}`}
+          className={`p-2 rounded-lg backdrop-blur-md transition-all border border-white/10 ${isAutoRotate ? 'bg-brand-primary text-white shadow-glow' : 'bg-black/50 text-white hover:bg-brand-primary/20'}`}
           title="Auto Rotate"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 12"/><path d="M21 3v9h-9"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 12" /><path d="M21 3v9h-9" /></svg>
         </button>
-        <button 
+        <button
           onClick={handleDownload}
-          className="bg-gray-800/80 text-white p-2 rounded-lg hover:bg-gray-700 backdrop-blur-sm transition-colors"
+          className="bg-black/50 text-white p-2 rounded-lg hover:bg-brand-primary/20 hover:text-brand-primary border border-white/10 backdrop-blur-md transition-all"
           title="Download PLY"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
         </button>
       </div>
 
       {/* Point Size Control */}
       <div className="absolute bottom-4 left-4 right-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-3">
-          <span className="text-xs text-gray-300 font-medium">Point Size</span>
-          <input 
-            type="range" 
-            min="0.002" 
-            max="0.05" 
-            step="0.001" 
-            value={size} 
+        <div className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-3 border border-white/10 shadow-lg">
+          <span className="text-xs text-brand-accent font-medium">Point Size</span>
+          <input
+            type="range"
+            min="0.002"
+            max="0.05"
+            step="0.001"
+            value={size}
             onChange={e => setSize(parseFloat(e.target.value))}
-            className="w-32 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            className="w-32 h-1 bg-surface-soft rounded-lg appearance-none cursor-pointer accent-brand-accent"
           />
         </div>
       </div>

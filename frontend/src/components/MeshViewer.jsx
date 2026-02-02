@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 
-export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRotate=true }) {
+export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRotate = true }) {
   const containerRef = useRef(null)
   const rendererRef = useRef(null)
   const sceneRef = useRef(null)
@@ -31,7 +31,8 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
 
     // Setup Scene
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x111827) // Tailwind gray-900
+    // Using a very dark color that matches brand-darker (#020617) but slightly lighter for visibility
+    scene.background = new THREE.Color(0x050b14)
     sceneRef.current = scene
 
     // Setup Camera
@@ -51,7 +52,7 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
     // Helpers
     const grid = new THREE.GridHelper(2, 20, 0x374151, 0x1f2937)
     scene.add(grid)
-    
+
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
@@ -94,7 +95,7 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
 
     const loadMesh = () => {
       setLoading(true)
-      
+
       // Clean up previous mesh
       if (meshRef.current) {
         sceneRef.current.remove(meshRef.current)
@@ -102,7 +103,7 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
       }
 
       const loader = new OBJLoader()
-      
+
       const onLoaded = (obj) => {
         // Center and scale if needed
         const box = new THREE.Box3().setFromObject(obj)
@@ -110,10 +111,10 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
         const size = box.getSize(new THREE.Vector3())
         const maxDim = Math.max(size.x, size.y, size.z)
         const scale = 1.0 / maxDim
-        
+
         obj.position.sub(center) // Center at origin
         obj.scale.multiplyScalar(scale) // Scale to fit unit box
-        
+
         meshRef.current = obj
         sceneRef.current.add(obj)
         setLoading(false)
@@ -141,12 +142,12 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
         if (c.isMesh) {
           c.material.wireframe = wire
           if (!showTex) {
-             // Save map if not already saved
-             if (c.material.map && !c.userData.map) c.userData.map = c.material.map
-             c.material.map = null
+            // Save map if not already saved
+            if (c.material.map && !c.userData.map) c.userData.map = c.material.map
+            c.material.map = null
           } else {
-             // Restore map if exists
-             if (c.userData.map) c.material.map = c.userData.map
+            // Restore map if exists
+            if (c.userData.map) c.material.map = c.userData.map
           }
           c.material.needsUpdate = true
         }
@@ -169,52 +170,58 @@ export default function MeshViewer({ objUrl, mtlUrl, autoRotate: initialAutoRota
   }
 
   return (
-    <div className="relative w-full h-[500px] bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-800 group">
+    <div className="relative w-full h-[500px] bg-black/40 rounded-xl overflow-hidden shadow-2xl border border-white/10 group backdrop-blur-sm">
       {/* 3D Canvas */}
       <div ref={containerRef} className="w-full h-full" />
-      
+
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
-          <div className="text-white font-medium animate-pulse">Loading Model...</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-10">
+          <div className="text-brand-accent font-medium animate-pulse flex flex-col items-center gap-2">
+            <svg className="animate-spin h-8 w-8 text-brand-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Loading 3D Model...</span>
+          </div>
         </div>
       )}
 
       {/* Controls Overlay */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button 
+        <button
           onClick={handleResetView}
-          className="bg-gray-800/80 text-white p-2 rounded-lg hover:bg-gray-700 backdrop-blur-sm transition-colors"
+          className="bg-black/50 text-white p-2 rounded-lg hover:bg-brand-primary/20 hover:text-brand-primary border border-white/10 backdrop-blur-md transition-all"
           title="Reset View"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12" /></svg>
         </button>
-        <button 
+        <button
           onClick={() => setIsAutoRotate(!isAutoRotate)}
-          className={`p-2 rounded-lg backdrop-blur-sm transition-colors ${isAutoRotate ? 'bg-blue-600 text-white' : 'bg-gray-800/80 text-white hover:bg-gray-700'}`}
+          className={`p-2 rounded-lg backdrop-blur-md transition-all border border-white/10 ${isAutoRotate ? 'bg-brand-primary text-white shadow-glow' : 'bg-black/50 text-white hover:bg-brand-primary/20'}`}
           title="Auto Rotate"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 12"/><path d="M21 3v9h-9"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 12" /><path d="M21 3v9h-9" /></svg>
         </button>
       </div>
 
       {/* Toggles */}
       <div className="absolute bottom-4 left-4 right-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-4">
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-300 hover:text-white transition-colors">
-            <input 
-              type="checkbox" 
-              checked={wire} 
-              onChange={e => setWire(e.target.checked)} 
-              className="rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+        <div className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-4 border border-white/10 shadow-lg">
+          <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-300 hover:text-white transition-colors select-none">
+            <input
+              type="checkbox"
+              checked={wire}
+              onChange={e => setWire(e.target.checked)}
+              className="rounded border-gray-500 bg-gray-800 text-brand-primary focus:ring-brand-primary"
             />
             Wireframe
           </label>
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-300 hover:text-white transition-colors">
-            <input 
-              type="checkbox" 
-              checked={showTex} 
-              onChange={e => setShowTex(e.target.checked)} 
-              className="rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+          <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-300 hover:text-white transition-colors select-none">
+            <input
+              type="checkbox"
+              checked={showTex}
+              onChange={e => setShowTex(e.target.checked)}
+              className="rounded border-gray-500 bg-gray-800 text-brand-primary focus:ring-brand-primary"
             />
             Texture
           </label>

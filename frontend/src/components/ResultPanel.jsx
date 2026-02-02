@@ -25,7 +25,7 @@ export default function ResultPanel({ result }) {
   const processingTime = result.processing_time || 0
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -33,43 +33,44 @@ export default function ResultPanel({ result }) {
     >
       {/* Header Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500">Points Generated</div>
-          <div className="text-2xl font-bold text-gray-900">{numPoints.toLocaleString()}</div>
+        <div className="bg-surface-soft/50 p-4 rounded-xl backdrop-blur-md border border-white/5">
+          <div className="text-sm text-gray-400">Points Generated</div>
+          <div className="text-2xl font-bold text-white font-display">{numPoints.toLocaleString()}</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500">Confidence</div>
-          <div className="text-2xl font-bold text-blue-600">{(confidence * 100).toFixed(1)}%</div>
+        <div className="bg-surface-soft/50 p-4 rounded-xl backdrop-blur-md border border-white/5">
+          <div className="text-sm text-gray-400">Confidence</div>
+          <div className="text-2xl font-bold text-brand-accent">{(confidence * 100).toFixed(1)}%</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500">Processing Time</div>
-          <div className="text-2xl font-bold text-gray-900">{processingTime.toFixed(2)}s</div>
+        <div className="bg-surface-soft/50 p-4 rounded-xl backdrop-blur-md border border-white/5">
+          <div className="text-sm text-gray-400">Processing Time</div>
+          <div className="text-2xl font-bold text-white font-display">{processingTime.toFixed(2)}s</div>
         </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500">Device</div>
-          <div className="text-xl font-bold text-gray-900 truncate" title={result.device || 'Unknown'}>{result.device || 'CUDA'}</div>
+        <div className="bg-surface-soft/50 p-4 rounded-xl backdrop-blur-md border border-white/5">
+          <div className="text-sm text-gray-400">Device</div>
+          <div className="text-xl font-bold text-white truncate font-display" title={result.device || 'Unknown'}>{result.device || 'CUDA'}</div>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Main Viewer - Takes 2/3 width on large screens */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-semibold text-gray-900">{result.mesh_url ? '3D Mesh' : '3D Point Cloud'}</h3>
-              <span className="text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded-full font-medium">Interactive</span>
+          <div className="bg-surface-glass rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-brand-darker/50">
+              <h3 className="font-semibold text-white">{result.mesh_url ? '3D Mesh' : '3D Point Cloud'}</h3>
+              <span className="text-xs px-2 py-1 bg-brand-primary/10 text-brand-primary border border-brand-primary/20 rounded-full font-medium">Interactive</span>
             </div>
-            <div className="p-1 bg-gray-900">
+            <div className="p-1 bg-black/80 aspect-video relative">
+              {/* Viewer Container */}
               {result.mesh_url ? (
-                <MeshViewer 
+                <MeshViewer
                   objUrl={result.mesh_url}
                   mtlUrl={result.mesh_url.replace(/\.obj$/i, '.mtl')}
                   autoRotate={true}
                 />
               ) : (
-                <PointCloudCanvas 
-                  plyUrl={null} 
-                  points={result.point_cloud_coordinates} 
+                <PointCloudCanvas
+                  plyUrl={null}
+                  points={result.point_cloud_coordinates}
                   autoRotate={true}
                 />
               )}
@@ -79,14 +80,17 @@ export default function ResultPanel({ result }) {
 
         {/* Metrics Sidebar - Takes 1/3 width */}
         <div className="space-y-6">
-          <MetricCharts metrics={stats || {}} />
-          
-          <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
-            <h4 className="font-semibold text-blue-900 mb-2">Analysis Summary</h4>
-            <p className="text-sm text-blue-800 leading-relaxed">
-              The model reconstructed the object with <strong>{(confidence * 100).toFixed(0)}% confidence</strong>. 
-              {stats && stats.chamfer_distance < 0.05 
-                ? " Shape consistency is high, indicating accurate geometry recovery." 
+          {/* <MetricCharts metrics={stats || {}} />  -- Might need update if it has internal styles */}
+
+          <div className="bg-brand-primary/10 rounded-2xl p-6 border border-brand-primary/20">
+            <h4 className="font-semibold text-brand-primary mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Analysis Summary
+            </h4>
+            <p className="text-sm text-blue-100 leading-relaxed">
+              The model reconstructed the object with <strong>{(confidence * 100).toFixed(0)}% confidence</strong>.
+              {stats && stats.chamfer_distance < 0.05
+                ? " Shape consistency is high, indicating accurate geometry recovery."
                 : " Some geometric details might be smoothed out."}
             </p>
           </div>

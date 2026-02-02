@@ -7,7 +7,7 @@ export default function UploadBox({ onResult }) {
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState(null)
-  
+
   // Settings
   const [useSegmentation, setUseSegmentation] = useState(true)
   const [fScale, setFScale] = useState(1.1)
@@ -20,7 +20,7 @@ export default function UploadBox({ onResult }) {
       setErr("Please select an image first.")
       return
     }
-    setBusy(true); 
+    setBusy(true);
     setErr(null)
     try {
       let r;
@@ -29,7 +29,7 @@ export default function UploadBox({ onResult }) {
       } else {
         r = await predict(file, { fScale, useSegmentation, mode, nPoints })
       }
-      
+
       if (r.status === 'error') throw new Error(r.message)
       onResult(r)
     } catch (e) {
@@ -40,57 +40,56 @@ export default function UploadBox({ onResult }) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden">
-      <div className="p-8 border-b border-gray-100">
-        <h3 className="text-2xl font-bold text-gray-900">Start a Reconstruction</h3>
-        <p className="text-sm text-gray-600 mt-2">Upload an image and generate a high-quality 3D point cloud.</p>
+    <div className="bg-surface-glass backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+      <div className="p-8 border-b border-white/10">
+        <h3 className="text-2xl font-bold text-white">Start a Reconstruction</h3>
+        <p className="text-sm text-gray-400 mt-2">Upload an image and generate a high-quality 3D point cloud.</p>
       </div>
-      
+
       <div className="p-8 space-y-8">
         {/* Image Upload Area */}
-        <div className="relative group rounded-2xl ring-1 ring-blue-100 hover:ring-blue-300 transition-all shadow-soft hover:shadow-brand p-4 min-h-48">
+        <div className="relative group rounded-2xl ring-1 ring-white/10 hover:ring-brand-primary/50 transition-all shadow-lg hover:shadow-brand/20 p-4 min-h-48 bg-surface-soft/20">
           <ImageUpload onSubmit={f => { setFile(f); setErr(null); }} />
           {busy && (
-            <div className="absolute inset-0 z-10 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 opacity-60 animate-pulse pointer-events-none"></div>
+            <div className="absolute inset-0 z-10 rounded-xl bg-surface-dark/50 backdrop-blur-sm animate-pulse pointer-events-none"></div>
           )}
         </div>
 
         {/* Configuration Panel */}
-        <div className="bg-gray-50 rounded-xl p-6 space-y-6">
+        <div className="bg-surface-soft/30 rounded-xl p-6 space-y-6 border border-white/5">
           <div className="flex items-center justify-between">
-             <span className="text-base font-semibold text-gray-800">Reconstruction Controls</span>
-             <button 
-               type="button" 
-               className="text-xs px-2 py-1 rounded-md bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
-               onClick={() => setShowAdvanced(v => !v)}
-               aria-expanded={showAdvanced}
-               title={showAdvanced ? 'Hide advanced options' : 'Show advanced options'}
-             >
-               {showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
-             </button>
+            <span className="text-base font-semibold text-gray-200">Reconstruction Controls</span>
+            <button
+              type="button"
+              className="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+              onClick={() => setShowAdvanced(v => !v)}
+              aria-expanded={showAdvanced}
+              title={showAdvanced ? 'Hide advanced options' : 'Show advanced options'}
+            >
+              {showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
+            </button>
           </div>
-         
+
           <div className="space-y-4">
             <div className="text-xs font-semibold uppercase tracking-wider text-gray-500">Basic</div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Mode Selection */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Choose speed vs quality tradeoff">Quality Mode</label>
-                <span className="text-xs text-gray-500">{mode === 'mesh' ? 'Mesh Output' : 'Point Cloud'}</span>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider" title="Choose speed vs quality tradeoff">Quality Mode</label>
+                <span className="text-xs text-brand-primary">{mode === 'mesh' ? 'Mesh Output' : 'Point Cloud'}</span>
               </div>
-              <div className="flex bg-white rounded-md shadow-sm p-1 border border-gray-200">
+              <div className="flex bg-brand-darker rounded-lg shadow-inner p-1 border border-white/5">
                 {['fast', 'balanced', 'quality', 'mesh'].map((m) => (
                   <motion.button
                     key={m}
                     onClick={() => setMode(m)}
-                    className={`flex-1 text-sm py-1.5 rounded transition-all ${
-                      mode === m 
-                        ? 'bg-blue-600 text-white shadow-sm' 
-                        : 'text-gray-600 hover:bg-gray-100'
-                    }`}
+                    className={`flex-1 text-sm py-1.5 rounded-md transition-all ${mode === m
+                        ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20'
+                        : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                      }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     layout
@@ -104,110 +103,109 @@ export default function UploadBox({ onResult }) {
 
             {/* Focal Scale Slider */}
             <div className="space-y-2">
-               <div className="flex justify-between">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Adjust synthetic camera focal length">Focal Scale</label>
-                  <motion.span 
-                    key={fScale}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded"
-                  >
-                    {fScale.toFixed(2)}
-                  </motion.span>
-               </div>
-               <motion.input 
-                 type="range" 
-                 min="0.8" 
-                 max="1.4" 
-                 step="0.01" 
-                 value={fScale} 
-                 onChange={e => setFScale(parseFloat(e.target.value))}
-                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                 title="Higher values increase synthetic focal length and perceived depth"
-                 whileHover={{ scaleY: 1.05 }}
-                 transition={{ type: 'spring', stiffness: 250, damping: 20 }}
-               />
+              <div className="flex justify-between">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider" title="Adjust synthetic camera focal length">Focal Scale</label>
+                <motion.span
+                  key={fScale}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-xs font-mono text-brand-accent bg-brand-accent/10 px-2 py-0.5 rounded border border-brand-accent/20"
+                >
+                  {fScale.toFixed(2)}
+                </motion.span>
+              </div>
+              <motion.input
+                type="range"
+                min="0.8"
+                max="1.4"
+                step="0.01"
+                value={fScale}
+                onChange={e => setFScale(parseFloat(e.target.value))}
+                className="w-full h-2 bg-surface-soft rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                title="Higher values increase synthetic focal length and perceived depth"
+                whileHover={{ scaleY: 1.05 }}
+                transition={{ type: 'spring', stiffness: 250, damping: 20 }}
+              />
             </div>
 
-             {/* Point Count */}
-             <div className="space-y-2">
-               <div className="flex justify-between">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Number of points in output point cloud">Point Count</label>
-                  <motion.span
-                    key={nPoints}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded"
-                  >
-                    {nPoints.toLocaleString()}
-                  </motion.span>
-               </div>
-               <motion.input 
-                 type="range" 
-                 min="5000" 
-                 max="50000" 
-                 step="1000" 
-                 value={nPoints} 
-                 onChange={e => setNPoints(parseInt(e.target.value))}
-                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                 title="Increase for denser point clouds, at the cost of time"
-                 whileHover={{ scaleY: 1.05 }}
-                 transition={{ type: 'spring', stiffness: 250, damping: 20 }}
-               />
+            {/* Point Count */}
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider" title="Number of points in output point cloud">Point Count</label>
+                <motion.span
+                  key={nPoints}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-xs font-mono text-brand-accent bg-brand-accent/10 px-2 py-0.5 rounded border border-brand-accent/20"
+                >
+                  {nPoints.toLocaleString()}
+                </motion.span>
+              </div>
+              <motion.input
+                type="range"
+                min="5000"
+                max="50000"
+                step="1000"
+                value={nPoints}
+                onChange={e => setNPoints(parseInt(e.target.value))}
+                className="w-full h-2 bg-surface-soft rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                title="Increase for denser point clouds, at the cost of time"
+                whileHover={{ scaleY: 1.05 }}
+                transition={{ type: 'spring', stiffness: 250, damping: 20 }}
+              />
             </div>
 
             {/* Advanced Options */}
             <AnimatePresence initial={false}>
-            {showAdvanced && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="md:col-span-2 space-y-3 pt-4"
-              >
-                <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Advanced</div>
-                <div className="flex items-center space-x-3">
-                  <motion.input 
-                    id="seg-toggle"
-                    type="checkbox" 
-                    checked={useSegmentation} 
-                    onChange={e => setUseSegmentation(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    whileTap={{ scale: 0.9 }}
-                  />
-                  <motion.label 
-                    htmlFor="seg-toggle" 
-                    className="text-sm text-gray-700 cursor-pointer select-none" 
-                    title="Removes background to improve reconstruction focus"
-                    initial={false}
-                    animate={{ color: useSegmentation ? '#1f2937' : '#6b7280' }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Enable Background Removal (Segmentation)
-                  </motion.label>
-                  {useSegmentation && (
-                    <span className="relative inline-flex">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-40 animate-ping"></span>
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-gray-500">Advanced options may increase processing time.</p>
-              </motion.div>
-            )}
+              {showAdvanced && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className="md:col-span-2 space-y-3 pt-4 border-t border-white/5"
+                >
+                  <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Advanced</div>
+                  <div className="flex items-center space-x-3">
+                    <motion.input
+                      id="seg-toggle"
+                      type="checkbox"
+                      checked={useSegmentation}
+                      onChange={e => setUseSegmentation(e.target.checked)}
+                      className="w-4 h-4 text-brand-primary bg-surface-soft border-white/10 rounded focus:ring-brand-primary focus:ring-offset-brand-darker"
+                      whileTap={{ scale: 0.9 }}
+                    />
+                    <motion.label
+                      htmlFor="seg-toggle"
+                      className="text-sm text-gray-300 cursor-pointer select-none hover:text-white transition-colors"
+                      title="Removes background to improve reconstruction focus"
+                      initial={false}
+                      animate={{ color: useSegmentation ? '#fff' : '#9ca3af' }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Enable Background Removal (Segmentation)
+                    </motion.label>
+                    {useSegmentation && (
+                      <span className="relative inline-flex">
+                        <span className="w-2 h-2 bg-brand-accent rounded-full"></span>
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-40 animate-ping"></span>
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500">Advanced options may increase processing time.</p>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         </div>
 
         {/* Action Button */}
         <div className="pt-2">
-          <button 
-            className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all transform active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 flex items-center justify-center gap-2 ${
-              busy || !file 
-                ? 'bg-gray-400 cursor-not-allowed' 
+          <button
+            className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all transform active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-200 flex items-center justify-center gap-2 ${busy || !file
+                ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-brand-primary to-blue-700 shadow-lg hover:shadow-brand'
-            }`}
+              }`}
             onClick={submit}
             disabled={busy || !file}
             aria-busy={busy}

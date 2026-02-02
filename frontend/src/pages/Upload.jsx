@@ -6,10 +6,10 @@ import { motion } from 'framer-motion'
 
 export default function Upload({ setToast }) {
   const [result, setResult] = useState(null)
-  
+
   // Wrapper to sync local toast with global toast if provided, or use local
   const { toasts, push } = useToast()
-  
+
   const handleResult = (r) => {
     setResult(r)
     const msg = `Reconstruction complete! (${r.num_points} points)`
@@ -21,14 +21,14 @@ export default function Upload({ setToast }) {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header Section */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">3D Object Reconstruction</h1>
-        <p className="text-gray-500 max-w-2xl mx-auto">
+        <h1 className="text-4xl font-display font-bold text-white tracking-tight">3D Object Reconstruction</h1>
+        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
           Upload a single 2D image of an object to generate a high-quality 3D point cloud model using our hybrid deep learning pipeline.
         </p>
       </div>
 
       {/* Main Upload Area */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
