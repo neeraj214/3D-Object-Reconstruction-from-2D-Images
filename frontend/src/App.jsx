@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { getCategories as getDatasetsList } from './api'
+import React, { useState } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Upload from './pages/Upload.jsx'
-import DatasetBrowser from './pages/DatasetBrowser.jsx'
-import CategoryView from './pages/CategoryView.jsx'
+import TechnologySection from './components/TechnologySection.jsx'
 
 export default function App() {
   const [toast, setToast] = useState(null)
-  const [datasets, setDatasets] = useState(null)
   const location = useLocation()
-
-  useEffect(() => {
-    (async () => {
-      try { const cats = await getDatasetsList(); setDatasets(cats) } catch { }
-    })();
-  }, []);
 
   const navLinks = [
     { name: 'Upload & Reconstruct', path: '/upload' },
-    { name: 'Dataset Browser', path: '/datasets' },
   ]
 
   const Home = () => {
@@ -276,8 +266,6 @@ export default function App() {
             <Routes location={location}>
               <Route path="/" element={<Home />} />
               <Route path="/upload" element={<Upload setToast={setToast} />} />
-              <Route path="/datasets" element={<DatasetBrowser datasets={datasets} />} />
-              <Route path="/datasets/:dataset/:category" element={<CategoryView />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
