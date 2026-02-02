@@ -24,209 +24,154 @@ export default function App() {
 
   const Home = () => {
     return (
-      <div className="w-full relative z-10">
-        <section className="relative overflow-hidden rounded-3xl px-8 py-16 sm:px-14 sm:py-24 border border-white/10 bg-surface-glass shadow-2xl">
-          {/* Animated Glow Background */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-brand-primary/20 rounded-full blur-[100px] animate-blob" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-brand-secondary/20 rounded-full blur-[100px] animate-blob animation-delay-2000" />
-            <div className="absolute top-[40%] left-[40%] w-[300px] h-[300px] bg-brand-accent/20 rounded-full blur-[100px] animate-blob animation-delay-4000" />
-          </div>
+      <div className="w-full relative z-10 space-y-24 pb-20">
 
+        {/* HERO SECTION */}
+        <section className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="relative grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8 z-10"
           >
-            <motion.div
-              className="space-y-8 relative z-10"
-              initial={{ opacity: 0, x: -24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-soft/50 backdrop-blur-md border border-white/10 text-xs text-brand-accent font-medium">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
-                </span>
-                <span>AI V4.0 Engine Ready</span>
-              </div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-soft/60 backdrop-blur-md border border-white/10 text-sm text-brand-accent font-medium shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent"></span>
+              </span>
+              <span>Next-Gen 3D Reconstruction Engine</span>
+            </div>
 
-              <h1 className="text-5xl sm:text-7xl font-display font-extrabold tracking-tight text-white leading-tight">
-                3D Reality <br />
-                <span className="text-gradient">Reimagined</span>
-              </h1>
+            <h1 className="text-6xl sm:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.1]">
+              Reality <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent">Transformed</span>
+            </h1>
 
-              <p className="text-lg text-gray-400 max-w-xl leading-relaxed">
-                Transform single 2D images into high-fidelity 3D point clouds with our state-of-the-art hybrid neural architecture.
-              </p>
+            <p className="text-xl text-gray-300 max-w-lg leading-relaxed border-l-4 border-brand-primary/50 pl-6">
+              Turn any 2D image into a high-fidelity 3D model instantly. Powered by advanced hybrid neural networks for chaotic environments.
+            </p>
 
-              <div className="flex flex-wrap gap-4 pt-2">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link to="/upload" className="btn btn-primary text-base px-8 py-3.5">
-                    <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                    Start Reconstructing
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a href="https://github.com/neeraj214" target="_blank" rel="noreferrer" className="btn btn-secondary text-base px-8 py-3.5">
-                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                    GitHub
-                  </a>
-                </motion.div>
-              </div>
+            <div className="flex flex-wrap gap-5 pt-4">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link to="/upload" className="btn btn-primary text-lg px-10 py-4 rounded-2xl shadow-glow relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                  <span className="relative flex items-center gap-2">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
+                    Launch Studio
+                  </span>
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <a href="https://github.com/neeraj214" target="_blank" rel="noreferrer" className="btn btn-secondary text-lg px-8 py-4 rounded-2xl">
+                  GitHub
+                </a>
+              </motion.div>
+            </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/10">
-                {[
-                  { k: 'Resolution', v: 'High-Fidelity' },
-                  { k: 'Points', v: '120k+' },
-                  { k: 'Inference', v: '< 2.1s' },
-                ].map((m, i) => (
-                  <div key={i} className="flex flex-col">
-                    <span className="text-xs text-gray-400 uppercase tracking-wider">{m.k}</span>
-                    <span className="text-lg font-bold text-white font-display">{m.v}</span>
-                  </div>
+            <div className="flex items-center gap-8 pt-8 text-sm font-mono text-gray-500">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-brand-darker bg-surface-soft flex items-center justify-center text-xs text-white">U{i}</div>
                 ))}
               </div>
-            </motion.div>
+              <p>Trusted by <span className="text-white font-bold">500+</span> Researchers</p>
+            </div>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.15, duration: 0.6 }}
-              className="relative"
-            >
-              <div className="relative rounded-2xl bg-surface-soft/40 backdrop-blur-xl border border-white/10 p-2 shadow-2xl ring-1 ring-white/10">
-                <div className="relative aspect-square rounded-xl overflow-hidden bg-brand-darker">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-brand-primary/20 via-transparent to-brand-accent/20"></div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="relative"
+          >
+            <div className="absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-accent rounded-3xl blur-2xl opacity-40 animate-pulse"></div>
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black/50 backdrop-blur-sm">
+              <img src="/src/assets/hero_image.png" alt="2D to 3D Visualization" className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-darker via-transparent to-transparent opacity-60"></div>
 
-                  {/* Abstract Tech Visualization */}
-                  <svg className="absolute inset-0 w-full h-full p-8" viewBox="0 0 400 400" fill="none">
-                    <defs>
-                      <linearGradient id="grid-grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1" />
-                        <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-                      </linearGradient>
-                      <filter id="glow-filter">
-                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                        <feMerge>
-                          <feMergeNode in="coloredBlur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                    </defs>
-
-                    {/* Grid Floor */}
-                    <path d="M50 300 L350 300 L400 400 L0 400 Z" fill="url(#grid-grad)" />
-                    <path d="M50 300 L350 300" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.3" />
-                    {[...Array(9)].map((_, i) => (
-                      <path key={i} d={`M${50 + i * 37.5} 300 L${(i - 4) * 20 + 200} 400`} stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.2" />
-                    ))}
-
-                    {/* Central Object (Abstract Cube) */}
-                    <g transform="translate(200 200)" filter="url(#glow-filter)">
-                      <motion.g
-                        animate={{ rotateY: 360 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                      >
-                        <path d="M-60 -60 L60 -60 L60 60 L-60 60 Z" stroke="#06b6d4" strokeWidth="2" fill="none" opacity="0.8" />
-                        <path d="M-40 -40 L40 -40 L40 40 L-40 40 Z" stroke="#6366f1" strokeWidth="2" fill="none" opacity="0.6" />
-                        <circle cx="0" cy="0" r="10" fill="#3b82f6" />
-                        {[...Array(6)].map((_, i) => (
-                          <motion.circle
-                            key={i}
-                            r="2"
-                            fill="#fff"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: [0, 1, 0], cx: [0, Math.cos(i) * 100], cy: [0, Math.sin(i) * 100] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                          />
-                        ))}
-                      </motion.g>
-                    </g>
-                  </svg>
-
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-brand-accent shadow-[0_0_10px_rgba(6,182,212,0.8)]"
-                        animate={{ width: ["0%", "100%"] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                    </div>
-                    <div className="flex justify-between mt-2 text-xs text-brand-accent font-mono">
-                      <span>SCANNING_GEOMETRY</span>
-                      <span>100%</span>
-                    </div>
-                  </div>
+              {/* Floating UI Elements on Image */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute bottom-6 left-6 right-6 bg-surface-glass backdrop-blur-xl p-4 rounded-xl border border-white/20 flex gap-4 items-center"
+              >
+                <div className="w-12 h-12 bg-brand-primary/20 rounded-lg flex items-center justify-center border border-brand-primary/50 text-brand-primary">
+                  <svg className="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
                 </div>
-              </div>
-            </motion.div>
+                <div>
+                  <div className="text-xs text-brand-accent uppercase tracking-wider font-bold">Status</div>
+                  <div className="text-white font-mono text-sm">Rendering Point Cloud...</div>
+                </div>
+                <div className="ml-auto text-2xl font-bold text-white">98%</div>
+              </motion.div>
+            </div>
           </motion.div>
         </section>
 
-        <section className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              title: 'Hybrid Architecture',
-              desc: 'CNN + Transformer fusion for robust global and local geometry extraction.',
-              icon: (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-              )
-            },
-            {
-              title: 'Precision Controls',
-              desc: 'Fine-tune point density, smoothing factors, and post-processing filters.',
-              icon: (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              )
-            },
-            {
-              title: 'Smart Segmentation',
-              desc: 'Automatic background removal ensures clean object reconstruction.',
-              icon: (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              )
-            },
-          ].map((f, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: idx * 0.1 }}
-              className="p-6 rounded-2xl bg-surface-soft/30 border border-white/5 hover:bg-surface-soft/50 hover:border-brand-primary/30 transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300 mb-4">
-                {f.icon}
+        {/* HOW IT WORKS SECTION */}
+        <section className="relative py-12">
+          <div className="text-center mb-16">
+            <span className="text-brand-accent font-mono text-sm tracking-widest uppercase">Workflow</span>
+            <h2 className="text-4xl font-display font-bold text-white mt-2">From Pixel to Voxel</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            {/* Connecting Line */}
+            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-brand-primary/0 via-brand-primary/50 to-brand-primary/0 border-t border-dashed border-white/20 z-0"></div>
+
+            {[
+              { step: '01', title: 'Upload', desc: 'Drag & drop any 2D image. Standard formats (JPG, PNG) supported.', icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' },
+              { step: '02', title: 'Process', desc: 'Our AI analyzes geometry, depth, and texture in seconds.', icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z' },
+              { step: '03', title: 'Interact', desc: 'Rotate, zoom, and export your 3D model (PLY/OBJ).', icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' }
+            ].map((s, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center group">
+                <div className="w-24 h-24 rounded-2xl bg-surface-glass backdrop-blur-xl border border-white/10 flex items-center justify-center mb-6 shadow-xl group-hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span className="absolute top-2 right-3 text-xs font-bold text-white/20 font-display">{s.step}</span>
+                  <svg className="w-10 h-10 text-white group-hover:text-brand-accent transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d={s.icon} /></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{s.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed max-w-xs">{s.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">{f.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+            ))}
+          </div>
+        </section>
+
+        {/* FEATURES GRID */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            { title: 'Neural Rendering', desc: 'Advanced NeRF-inspired algorithms for photorealistic texture recovery.', color: 'from-blue-500/20 to-cyan-500/20' },
+            { title: 'Geometric Consistency', desc: 'Enforces shape priors to prevent artifacts in occluded regions.', color: 'from-purple-500/20 to-pink-500/20' },
+            { title: 'Real-time Preview', desc: 'WebGL-powered viewer with PBR lighting and post-processing.', color: 'from-amber-500/20 to-orange-500/20' },
+            { title: 'Cloud Export', desc: 'Download standard formats compatible with Blender, Unity, and Unreal.', color: 'from-emerald-500/20 to-teal-500/20' },
+          ].map((f, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.02 }}
+              className={`p-8 rounded-3xl bg-gradient-to-br ${f.color} border border-white/5 backdrop-blur-sm relative overflow-hidden group`}
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <svg className="w-24 h-24 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg>
+              </div>
+              <h3 className="text-2xl font-display font-bold text-white mb-3">{f.title}</h3>
+              <p className="text-gray-300 leading-relaxed">{f.desc}</p>
             </motion.div>
           ))}
         </section>
 
-        <section className="mt-24 text-center pb-12">
-          <div className="relative inline-block">
-            <div className="absolute inset-0 bg-brand-secondary blur-2xl opacity-20 rounded-full"></div>
-            <h2 className="relative text-3xl font-display font-bold text-white mb-4">Ready for the Next Dimension?</h2>
+        {/* CALL TO ACTION */}
+        <section className="relative rounded-[2.5rem] overflow-hidden bg-brand-primary/10 border border-brand-primary/20 p-12 sm:p-20 text-center">
+          <div className="absolute inset-0 bg-[url('/src/assets/hero_image.png')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+          <div className="relative z-10">
+            <h2 className="text-4xl sm:text-5xl font-display font-bold text-white mb-6">Ready to Create?</h2>
+            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join the revolution in 3D asset generation today.</p>
+            <Link to="/upload" className="inline-flex items-center btn btn-primary px-12 py-5 text-xl rounded-full shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_50px_rgba(59,130,246,0.6)] transition-all">
+              Try It Now - Free
+            </Link>
           </div>
-
-          <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-            Join researchers and developers using our tool for AR/VR asset creation and robotic perception.
-          </p>
-
-          <Link to="/upload" className="btn btn-primary px-10 py-4 text-lg rounded-full">
-            Deploy Reconstruction
-          </Link>
         </section>
+
       </div>
     )
   }
@@ -263,8 +208,8 @@ export default function App() {
                   key={link.path}
                   to={link.path}
                   className={`text-sm font-medium transition-colors duration-200 relative py-2 ${location.pathname.startsWith(link.path) || (link.path === '/upload' && location.pathname === '/')
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-white'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
                     }`}
                 >
                   {link.name}
@@ -297,8 +242,8 @@ export default function App() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.9 }}
               className={`fixed top-24 right-6 z-[60] p-4 rounded-xl border backdrop-blur-xl shadow-2xl flex items-center gap-4 ${toast.type === 'error'
-                  ? 'bg-red-500/10 border-red-500/20 text-red-200'
-                  : 'bg-green-500/10 border-green-500/20 text-green-200'
+                ? 'bg-red-500/10 border-red-500/20 text-red-200'
+                : 'bg-green-500/10 border-green-500/20 text-green-200'
                 }`}
             >
               <div className={`p-2 rounded-lg ${toast.type === 'error' ? 'bg-red-500/20' : 'bg-green-500/20'}`}>
