@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let baseURL = 'http://127.0.0.1:8000'
+let baseURL = ''
 if (typeof window !== 'undefined') {
   const stored = window.localStorage.getItem('API_BASE_URL')
   if (stored) baseURL = stored
