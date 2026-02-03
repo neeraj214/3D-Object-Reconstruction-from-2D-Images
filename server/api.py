@@ -146,18 +146,6 @@ def _startup_init():
     except Exception:
         pass
 
-@app.get("/api/status")
-def status():
-    return {"status": "ok", "ready": True}
-
-@app.get("/api/model-info")
-def model_info():
-    return {
-        "model": "DPT-Hybrid + PointNet",
-        "version": "1.0.0",
-        "device": "cuda" if o3d.core.cuda.is_available() else "cpu"
-    }
-
 @app.post("/api/reconstruct")
 async def reconstruct(file: UploadFile = File(...), n_points: int = 16000, f_scale: float = 1.0, use_segmentation: bool = False, mode: str = 'fast'):
     try:
