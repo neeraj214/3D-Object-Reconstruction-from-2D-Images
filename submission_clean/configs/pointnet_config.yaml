@@ -1,4 +1,0 @@
-lr: 1e-3
-batch_size: 16
-epochs: 100
-checkpoint_dir: checkpoints/pointnet
