@@ -20,7 +20,10 @@ frontend/node_modules/
 # Datasets and large assets
 data/
 outputs/
-results/
+results/*
+!results/checkpoints_enhanced/
+results/checkpoints_enhanced/*
+!results/checkpoints_enhanced/final_model.pth
 logs/
 experiments/
 project_backups/
